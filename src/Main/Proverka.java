@@ -11,10 +11,10 @@ public class Proverka {
         while (true) {
             System.out.println("Ключ слово: ");
             //Console console = System.console();
-            Scanner scan_key = new Scanner(System.in, StandardCharsets.UTF_8);
+            Scanner scan_key = new Scanner(System.in, "windows-1251");
             //a = console.readLine();
             a = scan_key.nextLine();
-
+            System.out.println();
             if (Pattern.matches("[a-zA-Z]{4}", a)) {
                 break;
             } else {
@@ -28,7 +28,7 @@ public class Proverka {
         String a;
         while (true) {
             System.out.println("Ключ слово: ");
-            Scanner scan_key = new Scanner(System.in, StandardCharsets.UTF_8);
+            Scanner scan_key = new Scanner(System.in, "windows-1251");
             a = scan_key.nextLine();
 
             if (Pattern.matches("[0-9]{5}", a)) {
@@ -40,4 +40,5 @@ public class Proverka {
         }
         return a;
     }
+
 }

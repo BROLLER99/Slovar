@@ -1,27 +1,20 @@
 package Main;
 
-import Slov.Slov;
+import Slov.*;
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
+        int arg;
+        if(args.length>0) {
+            arg = 1;
+        }
+        else arg=0;
         Menu menu = new Menu();
         Proverka pr = new Proverka();
-        //Заполнение первого словоря
         Slov slovar1 = new Slov();
-        slovar1.dobav("keyA","ключA");
-        slovar1.dobav("keyB","ключB");
-        slovar1.dobav("keyC","ключC");
-        slovar1.dobav("keyD","ключD");
-
-        //Заполнение второго словаря
         Slov slovar2 = new Slov();
-        slovar2.dobav("11111","ключ1");
-        slovar2.dobav("22222","ключ2");
-        slovar2.dobav("33333","ключ3");
-        slovar2.dobav("44444","ключ4");
-
+        WorkFile wf = new WorkFile();
         while (true)
         {
             menu.mainmenu();
@@ -29,11 +22,12 @@ public class Main {
             int mm = sc.nextInt();
             switch (mm){
                 case 1:
-                    //sc.close();
+                    if(arg==1) {
+                        wf.read("words.txt");
+                    }
                     while (true) {
                     menu.pervi_slovar();
                     menu.slovmenu();
-                    //Scanner sca = new Scanner(System.in);
                     int sm1 = sc.nextInt();
                         switch (sm1) {
                             case 1:
@@ -43,11 +37,15 @@ public class Main {
                                 System.out.println("Введите новый ключ и слово перевод");
                                 String key_slovo = pr.proverka_word();
                                 System.out.println("Слово перевод");
-                                Scanner scan_value = new Scanner(System.in);
+                                Scanner scan_value = new Scanner(System.in,"windows-1251");
                                 String value_slovo = scan_value.nextLine();
                                 slovar1.dobav(key_slovo, value_slovo);
                                 System.out.println("Добавлена запись: " + key_slovo + " : " + value_slovo);
                                 System.out.println();
+                                if(arg==1) {
+                                    wf.write("words.txt");
+                                }
+                                System.out.println(arg);
                                 break;
                             case 3:
                                 System.out.println("Введите ключ удаляемого слова:");
@@ -55,6 +53,9 @@ public class Main {
                                 slovar1.udal(udal);
                                 System.out.println("Слово с ключем " + udal + " удалено");
                                 System.out.println();
+                                if(arg==1) {
+                                    wf.write("words.txt");
+                                }
                                 break;
                             case 4:
                                 System.out.println("Введите ключ слова, которое нужно найти");
@@ -70,19 +71,15 @@ public class Main {
                             default:
                                 System.out.println("Такого пункта меню не существует!");
                                 System.out.println();
-                                //break;
-
                         }
-                        //sca.close();
-                        //break;
                     }
-                    //break;
                 case 2:
-                   // sc.close();
+                    if(arg==1) {
+                        wf.read("chisla.txt");
+                    }
                     while (true) {
                     menu.vtoroi_slovar();
                     menu.slovmenu();
-                    //Scanner scan = new Scanner(System.in);
                     int sm2 = sc.nextInt();
 
                         switch (sm2) {
@@ -93,11 +90,14 @@ public class Main {
                                 System.out.println("Введите новый ключ и слово перевод");
                                 String key_slovo=pr.proverka_number();
                                 System.out.println("Слово перевод");
-                                Scanner scan_value = new Scanner(System.in);
+                                Scanner scan_value = new Scanner(System.in, "windows-1251");
                                 String value_slovo = scan_value.nextLine();
                                 slovar2.dobav(key_slovo, value_slovo);
                                 System.out.println("Добавлена запись: " + key_slovo + " : " + value_slovo);
                                 System.out.println();
+                                if(arg==1) {
+                                    wf.write("chisla.txt");
+                                }
                                 break;
                             case 3:
                                 System.out.println("Введите ключ удаляемого слова:");
@@ -105,6 +105,9 @@ public class Main {
                                 slovar2.udal(udal1);
                                 System.out.println("Слово с ключем " + udal1 + " удалено");
                                 System.out.println();
+                                if(arg==1) {
+                                    wf.write("chisla.txt");
+                                }
                                 break;
                             case 4:
                                 System.out.println("Введите ключ слова, которое нужно найти");
@@ -121,8 +124,6 @@ public class Main {
                                 System.out.println("Такого пункта меню не существует!");
                                 System.out.println();
                         }
-                       // scan.close();
-                        //break;
                     }
                 case 0:
                     System.out.println("Выход из программы.");
@@ -132,7 +133,6 @@ public class Main {
                     System.out.println("Такого пункта меню не существует!");
                     System.out.println();
             }
-            //break;
         }
     }
 }
