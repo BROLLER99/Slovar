@@ -1,6 +1,7 @@
-package Main;
+package main;
 
-import Slov.*;
+import slov.Slov;
+import slov.WorkFile;
 import java.util.Scanner;
 
 public class Main {
@@ -37,15 +38,13 @@ public class Main {
                                 System.out.println("Введите новый ключ и слово перевод");
                                 String key_slovo = pr.proverka_word();
                                 System.out.println("Слово перевод");
-                                Scanner scan_value = new Scanner(System.in,"windows-1251");
-                                String value_slovo = scan_value.nextLine();
+                                String value_slovo = pr.proverka_consol();
                                 slovar1.dobav(key_slovo, value_slovo);
                                 System.out.println("Добавлена запись: " + key_slovo + " : " + value_slovo);
                                 System.out.println();
                                 if(arg==1) {
                                     wf.write("words.txt");
                                 }
-                                System.out.println(arg);
                                 break;
                             case 3:
                                 System.out.println("Введите ключ удаляемого слова:");
@@ -90,8 +89,7 @@ public class Main {
                                 System.out.println("Введите новый ключ и слово перевод");
                                 String key_slovo=pr.proverka_number();
                                 System.out.println("Слово перевод");
-                                Scanner scan_value = new Scanner(System.in, "windows-1251");
-                                String value_slovo = scan_value.nextLine();
+                                String value_slovo = pr.proverka_consol();
                                 slovar2.dobav(key_slovo, value_slovo);
                                 System.out.println("Добавлена запись: " + key_slovo + " : " + value_slovo);
                                 System.out.println();

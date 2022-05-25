@@ -1,4 +1,4 @@
-package Main;
+package main;
 
 public class Menu {
     public void mainmenu() {
