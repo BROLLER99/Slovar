@@ -1,4 +1,4 @@
-package slov;
+package dictionary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,15 +9,15 @@ import java.io.IOException;
 import java.util.Map;
 
 public class WorkFile {
-    Slov slov = new Slov();
-    public void read(String a) {
+    Dictionary dictionary = new Dictionary();
+    public void read(String nameFile) {
 
         BufferedReader br = null;
         try {
             //create file object
-            File file = new File(a);
+            File file = new File(nameFile);
             if(!file.exists()){
-                write(a);
+                write(nameFile);
             }
             //create BufferedReader object from the File
             br = new BufferedReader(new FileReader(file));
@@ -36,7 +36,7 @@ public class WorkFile {
 
                 //put key, value in HashMap if they are not empty
                 if (!name.equals("") && !value.equals(""))
-                    slov.getSlovar().put(name, value);
+                    dictionary.getDictionary().put(name, value);
             }
 
         } catch (Exception e) {
@@ -51,14 +51,14 @@ public class WorkFile {
             }
         }
     }
-    public void write(String a){
-        File file = new File(a);
+    public void write(String nameFile){
+        File file = new File(nameFile);
         BufferedWriter bf = null;;
         try{
             //create new BufferedWriter for the output file
             bf = new BufferedWriter(new FileWriter(file));
             //iterate map entries
-            for(Map.Entry<String, String> entry : slov.getSlovar().entrySet()){
+            for(Map.Entry<String, String> entry : dictionary.getDictionary().entrySet()){
                 //put key and value separated by a colon
                 bf.write( entry.getKey() + ":" + entry.getValue() );
                 //new line
