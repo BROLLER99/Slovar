@@ -7,10 +7,31 @@ import java.util.Scanner;
 
 import static programm.Main.argsCommandLine;
 
+/**
+ * Класс работы с пользователем через консль, предоставляет выбор словаря и действия внутри него
+ */
 
 public class Start {
+    /**
+     * Имя файла, содержащий ключи-слова
+     */
     private static final String WORDS_FILE = "words.txt";
+    /**
+     * Имя файла, содержащий ключи-цифры
+     */
     private static final String NUMBERS_FILE = "chisla.txt";
+    private static final String EXIT_PROGRAM = "Выход из программы. ";
+    private static final String DOES_NOT_EXIST = "Такого пункта меню не существует! ";
+    private static final String KEY_WORD = "Ключ слово: ";
+    private static final String VALUE = "Слово перевод ";
+    private static final String ADD_ENTRY = "Добавлена запись: ";
+    private static final String DELETE = " удалено ";
+    private static final String ALL_WORDS = "Все слова выведенны: ";
+    private static final String KEY_VALUE_SEPARATOR = ":";
+    private static final String YES_ELEMENT ="Такой элемент есть! ";
+    private static final String NO_ELEMENT ="Такого элемента нет ";
+    private static final String SPACE = " ";
+
     int numberOfDictionary;
     Menu menu = new Menu();
     Check check = new Check();
@@ -40,12 +61,12 @@ public class Start {
                     break;
             }
             else if (userChoice==0){
-                System.out.println("Выход из программы.");
+                System.out.println(EXIT_PROGRAM);
                     System.exit(0);
                     break;
             }
             else
-                System.out.println("Такого пункта меню не существует!");
+                System.out.println(DOES_NOT_EXIST);
                 System.out.println();
         }
    }
@@ -61,15 +82,16 @@ public class Start {
             int userChoice = scanner.nextInt();
             switch (userChoice) {
                 case 1:
-                    dictionary.outputAllElements();
+                    System.out.println(ALL_WORDS);
+                    System.out.println(dictionary.outputAllElements());
+
                     break;
                 case 2:
-                    System.out.println("Введите новый ключ и слово перевод");
                     String keyWord = check.checkDictionary(numberOfDictionary, pattern);
-                    System.out.println("Слово перевод");
+                    System.out.println(VALUE);
                     String valueWord = check.checkConsole();
                     dictionary.addElement(keyWord, valueWord);
-                    System.out.println("Добавлена запись: " + keyWord + " : " + valueWord);
+                    System.out.println(ADD_ENTRY + keyWord + KEY_VALUE_SEPARATOR + valueWord);
                     System.out.println();
                     if (numberOfDictionary==1) {
                         if (argsCommandLine == 1) {
@@ -83,10 +105,9 @@ public class Start {
                     }
                     break;
                 case 3:
-                    System.out.println("Введите ключ удаляемого слова:");
                     String keyDelete = check.checkDictionary(numberOfDictionary, pattern);
                     dictionary.deleteElement(keyDelete);
-                    System.out.println("Слово с ключем " + keyDelete + " удалено");
+                    System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
                     if (numberOfDictionary==1) {
                         if (argsCommandLine == 1) {
@@ -100,18 +121,20 @@ public class Start {
                     }
                     break;
                 case 4:
-                    System.out.println("Введите ключ слова, которое нужно найти");
                     String keySearch = check.checkDictionary(numberOfDictionary, pattern);
-                    dictionary.searchElement(keySearch);
-                    System.out.print("Ключ: " + keySearch + " Cлово: ");
+                    if(dictionary.searchElement(keySearch)){
+                        System.out.println(YES_ELEMENT);
+                    }
+                    else System.out.println(NO_ELEMENT);
+                    System.out.print(KEY_WORD + keySearch + SPACE +VALUE);
                     System.out.println(dictionary.outputElement(keySearch));
                     System.out.println();
                     break;
                 case 5:
-                    System.out.println("Выход из программы");
+                    System.out.println(EXIT_PROGRAM);
                     System.exit(0);
                 default:
-                    System.out.println("Такого пункта меню не существует!");
+                    System.out.println(DOES_NOT_EXIST);
                     System.out.println();
             }
         }

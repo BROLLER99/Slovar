@@ -15,21 +15,17 @@ public class Dictionary {
     public void deleteElement(String key){
         dictionary.remove(key);
     }
-    public void searchElement(String key){
-        if(dictionary.containsKey(key))
-            System.out.println("Такой элемент есть!");
-        else
-            System.out.println("Такого элемента нет");
+    public boolean searchElement(String key){
+        return dictionary.containsKey(key);
     }
-    public void outputAllElements() {
-        System.out.println("Все слова выведенны: ");
-        System.out.println();
+    public StringBuilder outputAllElements() {
+        StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> pair : dictionary.entrySet()) {
             String key = pair.getKey();
             String value = pair.getValue();
-            System.out.println(key + ":" + value);
+            sb.append(key).append(":").append(value).append("\n");
         }
-        System.out.println("");
+        return sb;
     }
     public Map<String, String> getDictionary() {
         return dictionary;
