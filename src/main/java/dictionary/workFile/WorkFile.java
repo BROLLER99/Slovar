@@ -1,4 +1,6 @@
-package dictionary;
+package dictionary.workFile;
+
+import dictionary.workMap.Dictionary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,8 +10,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Класс для чтения-записи файла
+ */
 public class WorkFile {
     Dictionary dictionary = new Dictionary();
+
+    /**
+     * Метод чтения файла в map
+     *
+     * @param nameFile аргумент - имя файла который будеть читать данный метод с диска в map
+     */
 
     public void read(String nameFile) {
 
@@ -19,7 +30,7 @@ public class WorkFile {
         }
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-            String line = null;
+            String line;
 
             while ((line = br.readLine()) != null) {
 
@@ -37,6 +48,11 @@ public class WorkFile {
         }
     }
 
+    /**
+     * Метод записи файла из map
+     *
+     * @param nameFile аргумент - имя файла который будет считан с map и записан на диск
+     */
     public void write(String nameFile) {
         File file = new File(nameFile);
         try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {

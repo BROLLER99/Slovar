@@ -1,4 +1,6 @@
-package programm;
+package dictionary;
+
+import dictionary.workConsole.Start;
 
 /**
  * Точка входа в программу
@@ -11,16 +13,16 @@ public class Main {
 
     /**
      * Запуск консольного приложения
+     *
+     * @param args Параметры командной строки
      */
     public static void main(String[] args) {
-        if(args.length>0) {
+        if (args.length > 0) {
             argsCommandLine = 1;
-        }
-        else argsCommandLine=0;
+        } else argsCommandLine = 0;
 
         Start start = new Start();
         start.chooseDictionary();
         start.chooseAction();
-
     }
 }

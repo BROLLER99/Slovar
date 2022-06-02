@@ -1,14 +1,14 @@
-package programm;
+package dictionary.workConsole;
 
-import dictionary.Dictionary;
-import dictionary.WorkFile;
+import dictionary.workMap.Dictionary;
+import dictionary.workFile.WorkFile;
 
 import java.util.Scanner;
 
-import static programm.Main.argsCommandLine;
+import static dictionary.Main.argsCommandLine;
 
 /**
- * Класс работы с пользователем через консль, предоставляет выбор словаря и действия внутри него
+ * Класс для работы с пользователем через консоль, предоставляет пользователю выбор словаря и действий внутри него
  */
 
 public class Start {
@@ -28,55 +28,60 @@ public class Start {
     private static final String DELETE = " удалено ";
     private static final String ALL_WORDS = "Все слова выведенны: ";
     private static final String KEY_VALUE_SEPARATOR = ":";
-    private static final String YES_ELEMENT ="Такой элемент есть! ";
-    private static final String NO_ELEMENT ="Такого элемента нет ";
+    private static final String YES_ELEMENT = "Такой элемент есть! ";
+    private static final String NO_ELEMENT = "Такого элемента нет ";
     private static final String SPACE = " ";
 
     int numberOfDictionary;
     Menu menu = new Menu();
-    Check check = new Check();
+    CheckConsole checkConsole = new CheckConsole();
+    CheckWord checkWord = new CheckWord();
     Dictionary dictionary = new Dictionary();
 
     WorkFile workFile = new WorkFile();
     String pattern;
+
+    /**
+     * Метод предоставляет пользователю выбор действия из главного меню.
+     */
     public void chooseDictionary() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             menu.mainMenu();
             int userChoice = scanner.nextInt();
-            if (userChoice==1){
+            if (userChoice == 1) {
                 pattern = "[a-zA-Z]{4}";
                 if (argsCommandLine == 1) {
-                        workFile.read(WORDS_FILE);
-                    }
-                    numberOfDictionary = 1;
-                    break;
-            }
-            else if(userChoice==2){
+                    workFile.read(WORDS_FILE);
+                }
+                numberOfDictionary = 1;
+                break;
+            } else if (userChoice == 2) {
                 pattern = "[0-9]{5}";
                 if (argsCommandLine == 1) {
-                        workFile.read(NUMBERS_FILE);
-                    }
-                    numberOfDictionary = 2;
-                    break;
-            }
-            else if (userChoice==0){
+                    workFile.read(NUMBERS_FILE);
+                }
+                numberOfDictionary = 2;
+                break;
+            } else if (userChoice == 0) {
                 System.out.println(EXIT_PROGRAM);
-                    System.exit(0);
-                    break;
-            }
-            else
+                System.exit(0);
+                break;
+            } else
                 System.out.println(DOES_NOT_EXIST);
-                System.out.println();
+            System.out.println();
         }
-   }
-    public void chooseAction(){
+    }
+
+    /**
+     * Метод предоставляет пользователю выбор действия из меню словаря
+     */
+    public void chooseAction() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            if(numberOfDictionary==1) {
+            if (numberOfDictionary == 1) {
                 menu.firstDictionary();
-            }
-            else menu.secondDictionary();
+            } else menu.secondDictionary();
 
             menu.dictionaryMenu();
             int userChoice = scanner.nextInt();
@@ -87,46 +92,43 @@ public class Start {
 
                     break;
                 case 2:
-                    String keyWord = check.checkDictionary(numberOfDictionary, pattern);
+                    String keyWord = checkWord.check(numberOfDictionary, pattern);
                     System.out.println(VALUE);
-                    String valueWord = check.checkConsole();
+                    String valueWord = checkConsole.check();
                     dictionary.addElement(keyWord, valueWord);
                     System.out.println(ADD_ENTRY + keyWord + KEY_VALUE_SEPARATOR + valueWord);
                     System.out.println();
-                    if (numberOfDictionary==1) {
+                    if (numberOfDictionary == 1) {
                         if (argsCommandLine == 1) {
                             workFile.write(WORDS_FILE);
                         }
-                    }
-                    else {
+                    } else {
                         if (argsCommandLine == 1) {
                             workFile.write(NUMBERS_FILE);
                         }
                     }
                     break;
                 case 3:
-                    String keyDelete = check.checkDictionary(numberOfDictionary, pattern);
+                    String keyDelete = checkWord.check(numberOfDictionary, pattern);
                     dictionary.deleteElement(keyDelete);
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
-                    if (numberOfDictionary==1) {
+                    if (numberOfDictionary == 1) {
                         if (argsCommandLine == 1) {
                             workFile.write(WORDS_FILE);
                         }
-                    }
-                    else {
+                    } else {
                         if (argsCommandLine == 1) {
                             workFile.write(NUMBERS_FILE);
                         }
                     }
                     break;
                 case 4:
-                    String keySearch = check.checkDictionary(numberOfDictionary, pattern);
-                    if(dictionary.searchElement(keySearch)){
+                    String keySearch = checkWord.check(numberOfDictionary, pattern);
+                    if (dictionary.searchElement(keySearch)) {
                         System.out.println(YES_ELEMENT);
-                    }
-                    else System.out.println(NO_ELEMENT);
-                    System.out.print(KEY_WORD + keySearch + SPACE +VALUE);
+                    } else System.out.println(NO_ELEMENT);
+                    System.out.print(KEY_WORD + keySearch + SPACE + VALUE);
                     System.out.println(dictionary.outputElement(keySearch));
                     System.out.println();
                     break;
