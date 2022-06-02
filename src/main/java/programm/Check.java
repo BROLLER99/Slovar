@@ -1,8 +1,7 @@
-package main;
+package programm;
 
 import java.io.Console;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class Check {
 

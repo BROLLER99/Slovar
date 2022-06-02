@@ -1,4 +1,4 @@
-package main;
+package programm;
 public class Main {
     public static int argsCommandLine;
     public static void main(String[] args) {
@@ -9,7 +9,7 @@ public class Main {
 
         Start start = new Start();
         start.chooseDictionary();
-        start.сhooseAction();
+        start.chooseAction();
 
     }
 }
