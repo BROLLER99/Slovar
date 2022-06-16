@@ -29,9 +29,18 @@ public class Start {
     private static final String DELETE = " удалено ";
     private static final String ALL_WORDS = "Все слова выведенны: ";
     private static final String KEY_VALUE_SEPARATOR = ":";
+    private static final String BAD_WORD = "Недопустимое слово.";
     private static final String YES_ELEMENT = "Такой элемент есть! ";
     private static final String NO_ELEMENT = "Такого элемента нет ";
     private static final String SPACE = " ";
+    private static final int ONE_FOR_USER_CHOICE = 1;
+    private static final int TWO_FOR_USER_CHOICE = 2;
+    private static final int ZERO_FOR_USER_CHOICE = 0;
+    private static final int ONE_FOR_COMMAND_LINE = 1;
+    private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
+    private static final int TWO_FOR_NUMBER_OF_DICTIONARY = 1;
+    private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
+    private static final String SECOND_PATTERN = "[0-9]{5}";
     int numberOfDictionary;
     Menu menu = new Menu();
     CheckWord checkWord = new CheckWord();
@@ -48,21 +57,21 @@ public class Start {
         while (true) {
             menu.mainMenu();
             int userChoice = scanner.nextInt();
-            if (userChoice == 1) {
-                pattern = "[a-zA-Z]{4}";
-                if (argsCommandLine == 1) {
+            if (userChoice == ONE_FOR_USER_CHOICE) {
+                pattern = FIRST_PATTERN;
+                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                     workFile.read(WORDS_FILE);
                 }
-                numberOfDictionary = 1;
+                numberOfDictionary = ONE_FOR_NUMBER_OF_DICTIONARY;
                 break;
-            } else if (userChoice == 2) {
-                pattern = "[0-9]{5}";
-                if (argsCommandLine == 1) {
+            } else if (userChoice == TWO_FOR_USER_CHOICE) {
+                pattern = SECOND_PATTERN;
+                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                     workFile.read(NUMBERS_FILE);
                 }
-                numberOfDictionary = 2;
+                numberOfDictionary = TWO_FOR_NUMBER_OF_DICTIONARY;
                 break;
-            } else if (userChoice == 0) {
+            } else if (userChoice == ZERO_FOR_USER_CHOICE) {
                 System.out.println(EXIT_PROGRAM);
                 System.exit(0);
                 break;
@@ -78,7 +87,7 @@ public class Start {
     public void chooseAction() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            if (numberOfDictionary == 1) {
+            if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
                 menu.firstDictionary();
             } else menu.secondDictionary();
 
@@ -91,39 +100,39 @@ public class Start {
 
                     break;
                 case 2:
-                    String keyWord = prov();
+                    String keyWord = checkWordCycle();
                     System.out.println(VALUE);
                     String valueWord = inputWord();
                     dictionary.addElement(keyWord, valueWord);
                     System.out.println(ADD_ENTRY + keyWord + KEY_VALUE_SEPARATOR + valueWord);
                     System.out.println();
-                    if (numberOfDictionary == 1) {
-                        if (argsCommandLine == 1) {
+                    if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             workFile.write(WORDS_FILE);
                         }
                     } else {
-                        if (argsCommandLine == 1) {
+                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             workFile.write(NUMBERS_FILE);
                         }
                     }
                     break;
                 case 3:
-                    String keyDelete = prov();
+                    String keyDelete = checkWordCycle();
                     dictionary.deleteElement(keyDelete);
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
-                    if (numberOfDictionary == 1) {
-                        if (argsCommandLine == 1) {
+                    if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             workFile.write(WORDS_FILE);
                         }
                     } else {
-                        if (argsCommandLine == 1) {
+                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             workFile.write(NUMBERS_FILE);
                         }
                     }
                     break;
                 case 4:
-                    String keySearch = prov();
+                    String keySearch = checkWordCycle();
                     if (dictionary.searchElement(keySearch)) {
                         System.out.println(YES_ELEMENT);
                     } else System.out.println(NO_ELEMENT);
@@ -152,7 +161,7 @@ public class Start {
 
     }
 
-    private String prov() {//TODO rename
+    private String checkWordCycle() {
         String keyWord;
         while (true) {
             System.out.println(KEY_WORD);
@@ -160,7 +169,7 @@ public class Start {
             if (checkWord.check(pattern, keyWord)) { //TODO
                 return keyWord;
             } else {
-                System.out.println("Недопустимое слово.");//TODO const
+                System.out.println(BAD_WORD);
             }
         }
     }

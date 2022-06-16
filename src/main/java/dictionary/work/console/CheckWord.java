@@ -13,10 +13,6 @@ public class CheckWord {
      * @return возвращает true, если слово прошло проверку и false, если не прошло
      */
     public boolean check(String patternOfDictionary, String keyWord) {
-        if (keyWord.matches(patternOfDictionary)) {
-            return true;
-        } else {
-            return false;
-        }
+        return keyWord.matches(patternOfDictionary);
     }
 }

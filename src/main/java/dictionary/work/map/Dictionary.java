@@ -53,13 +53,13 @@ public class Dictionary {
      * Метод для вывода всех элементов из Map
      */
     public StringBuilder outputAllElements() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, String> pair : dictionary.entrySet()) {
             String key = pair.getKey();
             String value = pair.getValue();
-            sb.append(key).append(":").append(value).append("\n");
+            stringBuilder.append(key).append(":").append(value).append("\n");
         }
-        return sb;
+        return stringBuilder;
     }
 
     /**
