@@ -1,6 +1,6 @@
-package dictionary.workFile;
+package dictionary.work.file;
 
-import dictionary.workMap.Dictionary;
+import dictionary.work.map.Dictionary;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

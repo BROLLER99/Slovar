@@ -1,6 +1,6 @@
 package dictionary;
 
-import dictionary.workConsole.Start;
+import dictionary.work.console.Start;
 
 /**
  * Точка входа в программу

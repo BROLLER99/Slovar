@@ -1,8 +1,9 @@
-package dictionary.workConsole;
+package dictionary.work.console;
 
-import dictionary.workMap.Dictionary;
-import dictionary.workFile.WorkFile;
+import dictionary.work.map.Dictionary;
+import dictionary.work.file.WorkFile;
 
+import java.io.Console;
 import java.util.Scanner;
 
 import static dictionary.Main.argsCommandLine;
@@ -31,10 +32,8 @@ public class Start {
     private static final String YES_ELEMENT = "Такой элемент есть! ";
     private static final String NO_ELEMENT = "Такого элемента нет ";
     private static final String SPACE = " ";
-
     int numberOfDictionary;
     Menu menu = new Menu();
-    CheckConsole checkConsole = new CheckConsole();
     CheckWord checkWord = new CheckWord();
     Dictionary dictionary = new Dictionary();
 
@@ -92,9 +91,9 @@ public class Start {
 
                     break;
                 case 2:
-                    String keyWord = checkWord.check(numberOfDictionary, pattern);
+                    String keyWord = prov();
                     System.out.println(VALUE);
-                    String valueWord = checkConsole.check();
+                    String valueWord = inputWord();
                     dictionary.addElement(keyWord, valueWord);
                     System.out.println(ADD_ENTRY + keyWord + KEY_VALUE_SEPARATOR + valueWord);
                     System.out.println();
@@ -109,7 +108,7 @@ public class Start {
                     }
                     break;
                 case 3:
-                    String keyDelete = checkWord.check(numberOfDictionary, pattern);
+                    String keyDelete = prov();
                     dictionary.deleteElement(keyDelete);
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
@@ -124,7 +123,7 @@ public class Start {
                     }
                     break;
                 case 4:
-                    String keySearch = checkWord.check(numberOfDictionary, pattern);
+                    String keySearch = prov();
                     if (dictionary.searchElement(keySearch)) {
                         System.out.println(YES_ELEMENT);
                     } else System.out.println(NO_ELEMENT);
@@ -138,6 +137,30 @@ public class Start {
                 default:
                     System.out.println(DOES_NOT_EXIST);
                     System.out.println();
+            }
+        }
+    }
+
+    private String inputWord() {
+        Console console = System.console();
+        if (console == null) {
+            Scanner scan_value = new Scanner(System.in);
+            return scan_value.nextLine();
+        } else {
+            return console.readLine();
+        }
+
+    }
+
+    private String prov() {//TODO rename
+        String keyWord;
+        while (true) {
+            System.out.println(KEY_WORD);
+            keyWord = inputWord();
+            if (checkWord.check(pattern, keyWord)) { //TODO
+                return keyWord;
+            } else {
+                System.out.println("Недопустимое слово.");//TODO const
             }
         }
     }

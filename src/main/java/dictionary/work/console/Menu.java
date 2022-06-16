@@ -1,4 +1,4 @@
-package dictionary.workConsole;
+package dictionary.work.console;
 
 /**
  * Класс отвечает за предоставление меню для консоли и описания словарей

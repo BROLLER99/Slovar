@@ -1,4 +1,4 @@
-package dictionary.workMap;
+package dictionary.work.map;
 
 import java.util.HashMap;
 import java.util.Map;
