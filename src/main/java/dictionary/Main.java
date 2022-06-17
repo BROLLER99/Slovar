@@ -1,14 +1,11 @@
 package dictionary;
 
-import dictionary.work.console.Start;
+import dictionary.work.console.View;
 
 /**
  * Точка входа в программу
  */
 public class Main {
-    /**
-     * Переменная для указания наличия аргументов командной строки
-     */
     public static int argsCommandLine;
 
     /**
@@ -21,8 +18,8 @@ public class Main {
             argsCommandLine = 1;
         } else argsCommandLine = 0;
 
-        Start start = new Start();
-        start.chooseDictionary();
-        start.chooseAction();
+        View view = new View();
+        view.chooseDictionary();
+        view.chooseAction();
     }
 }

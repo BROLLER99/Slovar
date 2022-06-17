@@ -14,19 +14,29 @@ import java.util.Map;
  * Класс для чтения-записи файла
  */
 public class WorkFile {
+    private static final String WORDS_FILE = "words.txt";
+    private static final String NUMBERS_FILE = "chisla.txt";
+    private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
+    private static final int ONE_FOR_SPLIT = 1;
+    private static final int ZERO_FOR_SPLIT = 0;
+    private static final String KEY_VALUE_SEPARATOR = ":";
     Dictionary dictionary = new Dictionary();
-
     /**
      * Метод чтения файла в map
      *
-     * @param nameFile аргумент - имя файла который будеть читать данный метод с диска в map
+     * @param numberOfDictionary аргумент - номер словаря по которому будет выбран читаемый файл
      */
 
-    public void read(String nameFile) {
+    public void read(int numberOfDictionary) {
+        String nameFile;
+        if (numberOfDictionary==ONE_FOR_NUMBER_OF_DICTIONARY){
+            nameFile = WORDS_FILE;
+        }
+        else nameFile = NUMBERS_FILE;
 
         File file = new File(nameFile);
         if (!file.exists()) {
-            write(nameFile);
+            write(numberOfDictionary);
         }
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
@@ -34,10 +44,10 @@ public class WorkFile {
 
             while ((line = br.readLine()) != null) {
 
-                String[] parts = line.split(":");
+                String[] parts = line.split(KEY_VALUE_SEPARATOR);
 
-                String name = parts[0].trim();
-                String value = parts[1].trim();
+                String name = parts[ZERO_FOR_SPLIT].trim();
+                String value = parts[ONE_FOR_SPLIT].trim();
 
                 if (!name.equals("") && !value.equals(""))
                     dictionary.getDictionary().put(name, value);
@@ -51,14 +61,20 @@ public class WorkFile {
     /**
      * Метод записи файла из map
      *
-     * @param nameFile аргумент - имя файла который будет считан с map и записан на диск
+     * @param numberOfDictionary аргумент - номер словаря, по которому будет выбран файл, который будет считан с map и записан на диск
      */
-    public void write(String nameFile) {
+    public void write(int numberOfDictionary) {
+        String nameFile;
+        if (numberOfDictionary==1){
+            nameFile = WORDS_FILE;
+        }
+        else nameFile = NUMBERS_FILE;
+
         File file = new File(nameFile);
         try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
 
             for (Map.Entry<String, String> entry : dictionary.getDictionary().entrySet()) {
-                bf.write(entry.getKey() + ":" + entry.getValue());
+                bf.write(entry.getKey() + KEY_VALUE_SEPARATOR + entry.getValue());
                 bf.newLine();
             }
             bf.flush();
