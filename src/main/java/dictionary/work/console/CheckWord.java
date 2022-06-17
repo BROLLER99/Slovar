@@ -1,17 +1,10 @@
 package dictionary.work.console;
 
-
 /**
- * Класс предназначен для проверки вводимого слова
+ * Класс реализует методы интерфейса InterfaceCheckWord
  */
-public class CheckWord {
-    /**
-     * Метод проверяет вводимое слово на соответствие условиям
-     *
-     * @param patternOfDictionary аргумент, по которому происходить проверка введенного слова
-     * @param keyWord аргумент, проверяемое ключ-слово
-     * @return возвращает true, если слово прошло проверку и false, если не прошло
-     */
+public class CheckWord implements InterfaceCheckWord {
+    @Override
     public boolean check(String patternOfDictionary, String keyWord) {
         return keyWord.matches(patternOfDictionary);
     }

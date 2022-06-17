@@ -7,6 +7,8 @@ import dictionary.work.console.View;
  */
 public class Main {
     public static int argsCommandLine;
+    private static final int ONE_FOR_COMMAND_LINE = 1;
+    private static final int ZERO_FOR_COMMAND_LINE = 0;
 
     /**
      * Запуск консольного приложения
@@ -14,9 +16,9 @@ public class Main {
      * @param args Параметры командной строки
      */
     public static void main(String[] args) {
-        if (args.length > 0) {
-            argsCommandLine = 1;
-        } else argsCommandLine = 0;
+        if (args.length > ZERO_FOR_COMMAND_LINE) {
+            argsCommandLine = ONE_FOR_COMMAND_LINE;
+        } else argsCommandLine = ZERO_FOR_COMMAND_LINE;
 
         View view = new View();
         view.chooseDictionary();

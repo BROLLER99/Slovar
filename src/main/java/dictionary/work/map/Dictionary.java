@@ -4,54 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Класс предназначен для работы с коллекцией Map
+ * Класс реализует методы интерфейса InterfaceDictionary
  */
-public class Dictionary {
+public class Dictionary implements InterfaceDictionary {
     /**
-     * Объект Dictionary1.Dictionary1.WorkConsole.WorkConsole.dictionary который будет хранить коллекцию Map
+     * Объект dictionary который будет хранить коллекцию Map
      */
     private static final Map<String, String> dictionary = new HashMap<>();// static чтоб можно было читать map в файл
-
-    /**
-     * Метод добавление элемента в Map
-     *
-     * @param key   - аргумент, хранящий ключ - слово, который необходимо добавить
-     * @param value - аргумент, хранящий слово - значение, который необходимо добавить
-     */
+    @Override
     public void addElement(String key, String value) {
         dictionary.put(key, value);
     }
-
-    /**
-     * Метод вывода элемента из Map
-     *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо вывести
-     */
+    @Override
     public String outputElement(String key) {
         return dictionary.get(key);
     }
-
-    /**
-     * Метод удаления элемента из Map
-     *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо удалить
-     */
+    @Override
     public void deleteElement(String key) {
         dictionary.remove(key);
     }
-
-    /**
-     * Метод поиска элемента в Map
-     *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо найти
-     */
+    @Override
     public boolean searchElement(String key) {
         return dictionary.containsKey(key);
     }
-
-    /**
-     * Метод для вывода всех элементов из Map
-     */
+    @Override
     public StringBuilder outputAllElements() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry<String, String> pair : dictionary.entrySet()) {
@@ -61,10 +37,7 @@ public class Dictionary {
         }
         return stringBuilder;
     }
-
-    /**
-     * Метод получения содержимого Map
-     */
+    @Override
     public Map<String, String> getDictionary() {
         return dictionary;
     }

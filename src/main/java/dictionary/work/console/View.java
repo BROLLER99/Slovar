@@ -1,9 +1,12 @@
 package dictionary.work.console;
 
+import dictionary.work.file.InterfaceWorkFile;
+import dictionary.work.map.InterfaceDictionary;
 import dictionary.work.map.Dictionary;
 import dictionary.work.file.WorkFile;
 
 import java.io.Console;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static dictionary.Main.argsCommandLine;
@@ -30,49 +33,48 @@ public class View {
     private static final String YES_ELEMENT = "Такой элемент есть! ";
     private static final String NO_ELEMENT = "Такого элемента нет ";
     private static final String SPACE = " ";
-    private static final int ONE_FOR_USER_CHOICE_IN_MAIN_MENU = 1;
-    private static final int TWO_FOR_USER_CHOICE_IN_MAIN_MENU = 2;
-    private static final int ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = 0;
+    private static final String ONE_FOR_USER_CHOICE_IN_MAIN_MENU = "1";
+    private static final String TWO_FOR_USER_CHOICE_IN_MAIN_MENU = "2";
+    private static final String ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = "0";
     private static final int ONE_FOR_COMMAND_LINE = 1;
     private static final int FIRST_NUMBER_OF_DICTIONARY = 1;
     private static final int SECOND_NUMBER_OF_DICTIONARY = 2;
     private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
     private static final String SECOND_PATTERN = "[0-9]{5}";
     private static final int ZERO_FOR_EXIT = 0;
-    private static final int ONE_FOR_CHOICE_IN_DICTIONARY_MENU = 1;
-    private static final int TWO_FOR_CHOICE_IN_DICTIONARY_MENU = 2;
-    private static final int THREE_FOR_CHOICE_IN_DICTIONARY_MENU = 3;
-    private static final int FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = 4;
-    private static final int FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = 5;
-    int numberOfDictionary;
-    CheckWord checkWord = new CheckWord();
-    Dictionary dictionary = new Dictionary();
-    WorkFile workFile = new WorkFile();
-    String pattern;
+    private static final String ONE_FOR_CHOICE_IN_DICTIONARY_MENU = "1";
+    private static final String TWO_FOR_CHOICE_IN_DICTIONARY_MENU = "2";
+    private static final String THREE_FOR_CHOICE_IN_DICTIONARY_MENU = "3";
+    private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
+    private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
+    private int numberOfDictionary;
+    InterfaceCheckWord checkWord = new CheckWord();
+    InterfaceDictionary dictionary = new Dictionary();
+    InterfaceWorkFile workFile = new WorkFile();
+    private String pattern;
 
     /**
      * Метод предоставляет пользователю выбор действия из главного меню.
      */
     public void chooseDictionary() {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.println(MAIN_MENU);
-            int userChoice = scanner.nextInt();
-            if (userChoice == ONE_FOR_USER_CHOICE_IN_MAIN_MENU) {
+            String userChoice = inputWord();
+            if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 pattern = FIRST_PATTERN;
                 if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                     numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
                     workFile.read(FIRST_NUMBER_OF_DICTIONARY);
                 }
                 break;
-            } else if (userChoice == TWO_FOR_USER_CHOICE_IN_MAIN_MENU) {
+            } else if (Objects.equals(userChoice, TWO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 pattern = SECOND_PATTERN;
                 if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                     numberOfDictionary = SECOND_NUMBER_OF_DICTIONARY;
                     workFile.read(SECOND_NUMBER_OF_DICTIONARY);
                 }
                 break;
-            } else if (userChoice == ZERO_FOR_USER_CHOICE_IN_MAIN_MENU) {
+            } else if (Objects.equals(userChoice, ZERO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 System.out.println(EXIT_PROGRAM);
                 System.exit(ZERO_FOR_EXIT);
                 break;
@@ -87,13 +89,12 @@ public class View {
      */
     public void chooseAction() {
         while (true) {
-            Scanner scanner = new Scanner(System.in);
             if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
                 System.out.println(FIRST_DICTIONARY_AND_TERMS);
             } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
 
             System.out.println(DICTIONARY_MENU);
-            int userChoice = scanner.nextInt();
+            String userChoice = inputWord();
             switch (userChoice) {
                 case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
                     System.out.println(ALL_WORDS);
@@ -162,7 +163,6 @@ public class View {
         } else {
             return console.readLine();
         }
-
     }
     /**
      * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
@@ -173,7 +173,7 @@ public class View {
         while (true) {
             System.out.println(KEY_WORD);
             keyWord = inputWord();
-            if (checkWord.check(pattern, keyWord)) { //TODO
+            if (checkWord.check(pattern, keyWord)) {
                 return keyWord;
             } else {
                 System.out.println(BAD_WORD);

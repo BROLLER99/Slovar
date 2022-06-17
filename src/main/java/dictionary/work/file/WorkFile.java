@@ -11,9 +11,9 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Класс для чтения-записи файла
+ * Класс реализует методы интерфейса InterfaceWorkFile
  */
-public class WorkFile {
+public class WorkFile implements InterfaceWorkFile {
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";
     private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
@@ -21,12 +21,7 @@ public class WorkFile {
     private static final int ZERO_FOR_SPLIT = 0;
     private static final String KEY_VALUE_SEPARATOR = ":";
     Dictionary dictionary = new Dictionary();
-    /**
-     * Метод чтения файла в map
-     *
-     * @param numberOfDictionary аргумент - номер словаря по которому будет выбран читаемый файл
-     */
-
+    @Override
     public void read(int numberOfDictionary) {
         String nameFile;
         if (numberOfDictionary==ONE_FOR_NUMBER_OF_DICTIONARY){
@@ -57,12 +52,7 @@ public class WorkFile {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Метод записи файла из map
-     *
-     * @param numberOfDictionary аргумент - номер словаря, по которому будет выбран файл, который будет считан с map и записан на диск
-     */
+    @Override
     public void write(int numberOfDictionary) {
         String nameFile;
         if (numberOfDictionary==1){
