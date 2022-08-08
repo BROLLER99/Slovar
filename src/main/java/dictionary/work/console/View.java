@@ -158,11 +158,17 @@ public class View {
     private String inputWord() {
         Console console = System.console();
         if (console == null) {
-            Scanner scan_value = new Scanner(System.in);
-            return scan_value.nextLine();
+            return createScanner().nextLine();
         } else {
             return console.readLine();
         }
+    }
+    /**
+     * Метод создает Scanner
+     * @return возвращает созданный Scanner
+     */
+    private Scanner createScanner(){
+        return new Scanner(System.in);
     }
     /**
      * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
