@@ -1,11 +1,13 @@
 package dictionary.work.console;
 
+import dictionary.work.exeption.FileException;
 import dictionary.work.file.InterfaceWorkFile;
 import dictionary.work.map.InterfaceDictionary;
 import dictionary.work.map.Dictionary;
 import dictionary.work.file.WorkFile;
 
 import java.io.Console;
+import java.io.File;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -47,6 +49,8 @@ public class View {
     private static final String THREE_FOR_CHOICE_IN_DICTIONARY_MENU = "3";
     private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
+    private static final String WRITE_FILE_EXCEPTION="Ошибка записи файла";
+    private static final String READ_FILE_EXCEPTION="Ошибка чтения файла";
     private int numberOfDictionary;
     InterfaceCheckWord checkWord = new CheckWord();
     InterfaceDictionary dictionary = new Dictionary();
@@ -58,30 +62,35 @@ public class View {
      * Метод предоставляет пользователю выбор действия из главного меню.
      */
     public void chooseDictionary() {
-        while (true) {
-            System.out.println(MAIN_MENU);
-            String userChoice = inputWord();
-            if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = FIRST_PATTERN;
-                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                    numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
-                    workFile.read(FIRST_NUMBER_OF_DICTIONARY);
-                }
-                break;
-            } else if (Objects.equals(userChoice, TWO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = SECOND_PATTERN;
-                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                    numberOfDictionary = SECOND_NUMBER_OF_DICTIONARY;
-                    workFile.read(SECOND_NUMBER_OF_DICTIONARY);
-                }
-                break;
-            } else if (Objects.equals(userChoice, ZERO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                System.out.println(EXIT_PROGRAM);
-                System.exit(ZERO_FOR_EXIT);
-                break;
-            } else
-                System.out.println(DOES_NOT_EXIST);
-            System.out.println();
+        try {
+            while (true) {
+                System.out.println(MAIN_MENU);
+                String userChoice = inputWord();
+                if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
+                    pattern = FIRST_PATTERN;
+                    if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                        numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
+                        workFile.read(FIRST_NUMBER_OF_DICTIONARY);
+                    }
+                    break;
+                } else if (Objects.equals(userChoice, TWO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
+                    pattern = SECOND_PATTERN;
+                    if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                        numberOfDictionary = SECOND_NUMBER_OF_DICTIONARY;
+                        workFile.read(SECOND_NUMBER_OF_DICTIONARY);
+                    }
+                    break;
+                } else if (Objects.equals(userChoice, ZERO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
+                    System.out.println(EXIT_PROGRAM);
+                    System.exit(ZERO_FOR_EXIT);
+                    break;
+                } else
+                    System.out.println(DOES_NOT_EXIST);
+                System.out.println();
+            }
+        }
+        catch (FileException e){
+            System.out.println(READ_FILE_EXCEPTION);
         }
     }
 
@@ -102,6 +111,7 @@ public class View {
                     System.out.println(dictionary.outputAllElements());
 
                     break;
+
                 case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
                     String keyWord = checkWordCycle();
                     System.out.println(VALUE);
@@ -109,30 +119,14 @@ public class View {
                     dictionary.addElement(keyWord, valueWord);
                     System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
                     System.out.println();
-                    if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.write(FIRST_NUMBER_OF_DICTIONARY);
-                        }
-                    } else {
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.write(SECOND_NUMBER_OF_DICTIONARY);
-                        }
-                    }
+                    tryException();
                     break;
                 case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
                     String keyDelete = checkWordCycle();
                     dictionary.deleteElement(keyDelete);
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
-                    if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.write(FIRST_NUMBER_OF_DICTIONARY);
-                        }
-                    } else {
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.write(SECOND_NUMBER_OF_DICTIONARY);
-                        }
-                    }
+                    tryException();
                     break;
                 case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
                     String keySearch = checkWordCycle();
@@ -150,6 +144,25 @@ public class View {
                     System.out.println(DOES_NOT_EXIST);
                     System.out.println();
             }
+        }
+    }
+    /**
+     * Метод проверки на наличие исключения
+     */
+    private void tryException(){
+        try {
+            if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
+                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                    workFile.write(FIRST_NUMBER_OF_DICTIONARY);
+                }
+            } else {
+                if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                    workFile.write(SECOND_NUMBER_OF_DICTIONARY);
+                }
+            }
+        }
+        catch (FileException e){
+            System.out.println(WRITE_FILE_EXCEPTION);
         }
     }
     /**

@@ -1,6 +1,7 @@
 package dictionary.work.file;
 
 import dictionary.work.map.Dictionary;
+import dictionary.work.exeption.FileException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -48,8 +49,8 @@ public class WorkFile implements InterfaceWorkFile {
                     dictionary.getDictionary().put(name, value);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException | IOException e) {
+            throw new FileException("Ошибка чтения файла");
         }
     }
     @Override
@@ -69,7 +70,7 @@ public class WorkFile implements InterfaceWorkFile {
             }
             bf.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileException("Ошибка записи файла");
         }
     }
 }
