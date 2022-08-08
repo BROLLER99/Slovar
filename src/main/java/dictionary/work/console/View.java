@@ -52,6 +52,7 @@ public class View {
     InterfaceDictionary dictionary = new Dictionary();
     InterfaceWorkFile workFile = new WorkFile();
     private String pattern;
+    private Scanner scanner;
 
     /**
      * Метод предоставляет пользователю выбор действия из главного меню.
@@ -164,12 +165,15 @@ public class View {
         }
     }
     /**
-     * Метод создает Scanner
-     * @return возвращает созданный Scanner
+     * Метод проверяет наличие Scanner и создает его если его нет
+     * @return возвращает Scanner в зависимости от условия
      */
-    private Scanner createScanner(){
-        return new Scanner(System.in);
+    private Scanner createScanner() {
+        if (scanner == null) {
+            return new Scanner(System.in);
+        } else return scanner;
     }
+
     /**
      * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
      * @return возвращает значение правильно введенного слова
