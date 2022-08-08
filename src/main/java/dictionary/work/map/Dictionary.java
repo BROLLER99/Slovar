@@ -1,5 +1,8 @@
 package dictionary.work.map;
 
+import dictionary.work.exeption.FileException;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,32 +15,59 @@ public class Dictionary implements InterfaceDictionary {
      * Объект dictionary который будет хранить коллекцию Map
      */
     private static final Map<String, String> dictionary = new HashMap<>();// static чтоб можно было читать map в файл
+
     @Override
     public void addElement(String key, String value) {
-        dictionary.put(key, value);
+        try {
+            dictionary.put(key, value);
+        } catch (IllegalArgumentException | NullPointerException | ClassCastException |
+                 UnsupportedOperationException e) {
+            throw new FileException("Ошибка добавления элемента");
+        }
     }
+
     @Override
     public String outputElement(String key) {
-        return dictionary.get(key);
+        try {
+            return dictionary.get(key);
+        } catch (ClassCastException | NullPointerException e) {
+            throw new FileException("Ошибка вывода элемента");
+        }
     }
+
     @Override
     public void deleteElement(String key) {
-        dictionary.remove(key);
+        try {
+            dictionary.remove(key);
+        } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
+            throw new FileException("Ошибка удаления элемента");
+        }
     }
+
     @Override
     public boolean searchElement(String key) {
-        return dictionary.containsKey(key);
+        try {
+            return dictionary.containsKey(key);
+        } catch (ClassCastException | NullPointerException e) {
+            throw new FileException("Ошибка поиска элемента");
+        }
     }
+
     @Override
     public StringBuilder outputAllElements() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Map.Entry<String, String> pair : dictionary.entrySet()) {
-            String key = pair.getKey();
-            String value = pair.getValue();
-            stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Map.Entry<String, String> pair : dictionary.entrySet()) {
+                String key = pair.getKey();
+                String value = pair.getValue();
+                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
+            }
+            return stringBuilder;
+        } catch (IllegalStateException | NullPointerException e) {
+            throw new FileException("Ошибка вывода всех элементов");
         }
-        return stringBuilder;
     }
+
     @Override
     public Map<String, String> getDictionary() {
         return dictionary;

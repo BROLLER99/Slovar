@@ -7,7 +7,6 @@ import dictionary.work.map.Dictionary;
 import dictionary.work.file.WorkFile;
 
 import java.io.Console;
-import java.io.File;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -49,8 +48,6 @@ public class View {
     private static final String THREE_FOR_CHOICE_IN_DICTIONARY_MENU = "3";
     private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
-    private static final String WRITE_FILE_EXCEPTION="Ошибка записи файла";
-    private static final String READ_FILE_EXCEPTION="Ошибка чтения файла";
     private int numberOfDictionary;
     InterfaceCheckWord checkWord = new CheckWord();
     InterfaceDictionary dictionary = new Dictionary();
@@ -60,6 +57,12 @@ public class View {
 
     /**
      * Метод предоставляет пользователю выбор действия из главного меню.
+     *
+     * @throws FileException возникает при наличии следующий исключений:IllegalArgumentException
+     *                       NullPointerException
+     *                       ClassCastException
+     *                       UnsupportedOperationException
+     *                       IOException
      */
     public void chooseDictionary() {
         try {
@@ -88,9 +91,8 @@ public class View {
                     System.out.println(DOES_NOT_EXIST);
                 System.out.println();
             }
-        }
-        catch (FileException e){
-            System.out.println(READ_FILE_EXCEPTION);
+        } catch (FileException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -102,54 +104,58 @@ public class View {
             if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
                 System.out.println(FIRST_DICTIONARY_AND_TERMS);
             } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
-
-            System.out.println(DICTIONARY_MENU);
-            String userChoice = inputWord();
-            switch (userChoice) {
-                case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
-                    System.out.println(ALL_WORDS);
-                    System.out.println(dictionary.outputAllElements());
-
-                    break;
-
-                case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
-                    String keyWord = checkWordCycle();
-                    System.out.println(VALUE);
-                    String valueWord = inputWord();
-                    dictionary.addElement(keyWord, valueWord);
-                    System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
-                    System.out.println();
-                    tryException();
-                    break;
-                case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
-                    String keyDelete = checkWordCycle();
-                    dictionary.deleteElement(keyDelete);
-                    System.out.println(KEY_WORD + keyDelete + DELETE);
-                    System.out.println();
-                    tryException();
-                    break;
-                case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
-                    String keySearch = checkWordCycle();
-                    if (dictionary.searchElement(keySearch)) {
-                        System.out.println(YES_ELEMENT);
-                    } else System.out.println(NO_ELEMENT);
-                    System.out.print(KEY_WORD + keySearch + SPACE + VALUE);
-                    System.out.println(dictionary.outputElement(keySearch));
-                    System.out.println();
-                    break;
-                case FIVE_FOR_CHOICE_IN_DICTIONARY_MENU:
-                    System.out.println(EXIT_PROGRAM);
-                    System.exit(ZERO_FOR_EXIT);
-                default:
-                    System.out.println(DOES_NOT_EXIST);
-                    System.out.println();
+            try {
+                System.out.println(DICTIONARY_MENU);
+                String userChoice = inputWord();
+                switch (userChoice) {
+                    case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        System.out.println(ALL_WORDS);
+                        System.out.println(dictionary.outputAllElements());
+                        break;
+                    case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        String keyWord = checkWordCycle();
+                        System.out.println(VALUE);
+                        String valueWord = inputWord();
+                        dictionary.addElement(keyWord, valueWord);
+                        System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
+                        System.out.println();
+                        tryException();
+                        break;
+                    case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        String keyDelete = checkWordCycle();
+                        dictionary.deleteElement(keyDelete);
+                        System.out.println(KEY_WORD + keyDelete + DELETE);
+                        System.out.println();
+                        tryException();
+                        break;
+                    case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        String keySearch = checkWordCycle();
+                        if (dictionary.searchElement(keySearch)) {
+                            System.out.println(YES_ELEMENT);
+                        } else System.out.println(NO_ELEMENT);
+                        System.out.print(KEY_WORD + keySearch + SPACE + VALUE);
+                        System.out.println(dictionary.outputElement(keySearch));
+                        System.out.println();
+                        break;
+                    case FIVE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        System.out.println(EXIT_PROGRAM);
+                        System.exit(ZERO_FOR_EXIT);
+                    default:
+                        System.out.println(DOES_NOT_EXIST);
+                        System.out.println();
+                }
+            } catch (FileException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
+
     /**
      * Метод проверки на наличие исключения
+     *
+     * @throws FileException возникает при появлении исключения IOException
      */
-    private void tryException(){
+    private void tryException() {
         try {
             if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
                 if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
@@ -160,13 +166,14 @@ public class View {
                     workFile.write(SECOND_NUMBER_OF_DICTIONARY);
                 }
             }
-        }
-        catch (FileException e){
-            System.out.println(WRITE_FILE_EXCEPTION);
+        } catch (FileException e) {
+            System.out.println(e.getMessage());
         }
     }
+
     /**
      * Метод запрашивает пользовательский ввод
+     *
      * @return возвращает значение введенное пользователем
      */
     private String inputWord() {
@@ -177,8 +184,10 @@ public class View {
             return console.readLine();
         }
     }
+
     /**
      * Метод проверяет наличие Scanner и создает его если его нет
+     *
      * @return возвращает Scanner в зависимости от условия
      */
     private Scanner createScanner() {
@@ -189,6 +198,7 @@ public class View {
 
     /**
      * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
+     *
      * @return возвращает значение правильно введенного слова
      */
     private String checkWordCycle() {

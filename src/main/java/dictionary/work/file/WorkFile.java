@@ -22,13 +22,13 @@ public class WorkFile implements InterfaceWorkFile {
     private static final int ZERO_FOR_SPLIT = 0;
     private static final String KEY_VALUE_SEPARATOR = ":";
     Dictionary dictionary = new Dictionary();
+
     @Override
     public void read(int numberOfDictionary) {
         String nameFile;
-        if (numberOfDictionary==ONE_FOR_NUMBER_OF_DICTIONARY){
+        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
             nameFile = WORDS_FILE;
-        }
-        else nameFile = NUMBERS_FILE;
+        } else nameFile = NUMBERS_FILE;
 
         File file = new File(nameFile);
         if (!file.exists()) {
@@ -49,17 +49,18 @@ public class WorkFile implements InterfaceWorkFile {
                     dictionary.getDictionary().put(name, value);
             }
 
-        } catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException | IOException e) {
+        } catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException |
+                 IOException e) {
             throw new FileException("Ошибка чтения файла");
         }
     }
+
     @Override
     public void write(int numberOfDictionary) {
         String nameFile;
-        if (numberOfDictionary==1){
+        if (numberOfDictionary == 1) {
             nameFile = WORDS_FILE;
-        }
-        else nameFile = NUMBERS_FILE;
+        } else nameFile = NUMBERS_FILE;
 
         File file = new File(nameFile);
         try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
