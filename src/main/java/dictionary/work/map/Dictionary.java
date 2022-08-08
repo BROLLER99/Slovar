@@ -7,6 +7,7 @@ import java.util.Map;
  * Класс реализует методы интерфейса InterfaceDictionary
  */
 public class Dictionary implements InterfaceDictionary {
+    private static final String KEY_VALUE_SEPARATOR = ":";
     /**
      * Объект dictionary который будет хранить коллекцию Map
      */
@@ -33,7 +34,7 @@ public class Dictionary implements InterfaceDictionary {
         for (Map.Entry<String, String> pair : dictionary.entrySet()) {
             String key = pair.getKey();
             String value = pair.getValue();
-            stringBuilder.append(key).append(":").append(value).append("\n");
+            stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
         }
         return stringBuilder;
     }
