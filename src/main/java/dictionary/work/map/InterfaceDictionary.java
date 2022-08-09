@@ -48,11 +48,11 @@ public interface InterfaceDictionary {
 //     */
 //    boolean searchElement(String key);
 //
-//    /**
-//     * Метод для вывода всех элементов
-//     *
-//     * @throws FileException if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
-//     *                       if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
-//     */
-//    StringBuilder outputAllElements();
+    /**
+     * Метод для вывода всех элементов
+     *
+     * @throws FileException if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     *                       if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
+     */
+    StringBuilder outputAllElements();
 }

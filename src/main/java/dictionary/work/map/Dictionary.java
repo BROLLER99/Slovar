@@ -53,20 +53,20 @@ public class Dictionary implements InterfaceDictionary {
 //        }
 //    }
 //
-//    @Override
-//    public StringBuilder outputAllElements() {
-//        try {
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for (Map.Entry<String, String> pair : dictionary.entrySet()) {
-//                String key = pair.getKey();
-//                String value = pair.getValue();
-//                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
-//            }
-//            return stringBuilder;
-//        } catch (IllegalStateException | NullPointerException e) {
-//            throw new FileException("Ошибка вывода всех элементов");
-//        }
-//    }
+    @Override
+    public StringBuilder outputAllElements() {
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Map.Entry<String, String> pair : dictionary.entrySet()) {
+                String key = pair.getKey();
+                String value = pair.getValue();
+                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
+            }
+            return stringBuilder;
+        } catch (IllegalStateException | NullPointerException e) {
+            throw new FileException("Ошибка вывода всех элементов");
+        }
+    }
 
 //    @Override
 //    public Map<String, String> getDictionary() {

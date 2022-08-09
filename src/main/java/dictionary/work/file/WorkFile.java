@@ -44,25 +44,31 @@ public class WorkFile implements InterfaceDictionary{
     public void getDictionary(int numberOfDictionary){
         this.numberOfDictionary=numberOfDictionary;
     }
-//    @Override
-//    public StringBuilder outputAllElements() {
-//        File file = new File(nameFile);
-//        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-//
-//            StringBuilder stringBuilder = new StringBuilder();
-//
-//            while(br.readLine()!=null) {
-//                String key = pair.getKey();
-//                String value = pair.getValue();
-//                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
-//            }
-//            return stringBuilder;
-//        }
-//        catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException |
-//                 IOException e) {
-//            throw new FileException("Ошибка чтения файла");
-//        }
-//    }
+    @Override
+    public StringBuilder outputAllElements() {
+        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+            nameFile = WORDS_FILE;
+        } else nameFile = NUMBERS_FILE;
+        File file = new File(nameFile);
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] parts = line.split(KEY_VALUE_SEPARATOR);
+
+                String name = parts[ZERO_FOR_SPLIT].trim();
+                String value = parts[ONE_FOR_SPLIT].trim();
+
+                if (!name.equals("") && !value.equals(""))
+                    stringBuilder.append(name).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
+            }
+            return stringBuilder;
+        }
+        catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException | IOException e) {
+            throw new FileException("Ошибка чтения файла");
+        }
+    }
 
 //    Dictionary dictionary = new Dictionary();
 //

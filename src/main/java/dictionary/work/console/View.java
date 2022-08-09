@@ -93,6 +93,12 @@ public class View {
             switch (userChoice) {
                 case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
                     System.out.println(ALL_WORDS);
+                    if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                        workFile.getDictionary(numberOfDictionary);
+                        System.out.println(workFile.outputAllElements());
+                    } else {
+                        System.out.println(dictionary.outputAllElements());
+                    }
                     break;
                 case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
                     String keyWord = checkWordCycle();
