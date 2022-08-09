@@ -44,15 +44,15 @@ public class Dictionary implements InterfaceDictionary {
 //        }
 //    }
 //
-//    @Override
-//    public boolean searchElement(String key) {
-//        try {
-//            return dictionary.containsKey(key);
-//        } catch (ClassCastException | NullPointerException e) {
-//            throw new FileException("Ошибка поиска элемента");
-//        }
-//    }
-//
+    @Override
+    public boolean searchElement(String key) {
+        try {
+            return dictionary.containsKey(key);
+        } catch (ClassCastException | NullPointerException e) {
+            throw new FileException("Ошибка поиска элемента");
+        }
+    }
+
     @Override
     public StringBuilder outputAllElements() {
         try {

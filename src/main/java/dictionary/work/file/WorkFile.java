@@ -69,7 +69,32 @@ public class WorkFile implements InterfaceDictionary{
             throw new FileException("Ошибка чтения файла");
         }
     }
+    @Override
+    public boolean searchElement(String key){
+        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+            nameFile = WORDS_FILE;
+        } else {
+            nameFile = NUMBERS_FILE;
+        }
+        File file = new File(nameFile);
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
 
+                String[] parts = line.split(KEY_VALUE_SEPARATOR);
+
+                String name = parts[ZERO_FOR_SPLIT].trim();
+
+                if (name.equals(key)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException | IOException e) {
+            throw new FileException("Ошибка чтения файла");
+        }
+    }
 //    Dictionary dictionary = new Dictionary();
 //
 //    @Override

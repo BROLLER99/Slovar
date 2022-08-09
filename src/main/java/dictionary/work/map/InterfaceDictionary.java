@@ -39,15 +39,15 @@ public interface InterfaceDictionary {
 //     */
 //    void deleteElement(String key);
 //
-//    /**
-//     * Метод поиска элемента
-//     *
-//     * @param key - аргумент, хранящий ключ - слово, который необходимо найти
-//     * @throws FileException if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-//     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
-//     */
-//    boolean searchElement(String key);
-//
+    /**
+     * Метод поиска элемента
+     *
+     * @param key - аргумент, хранящий ключ - слово, который необходимо найти
+     * @throws FileException if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
+     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     */
+    boolean searchElement(String key);
+
     /**
      * Метод для вывода всех элементов
      *

@@ -121,15 +121,21 @@ public class View {
                     System.out.println();
                     //      tryException();
                     break;
-//                    case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
-//                        String keySearch = checkWordCycle();
-//                        if (dictionary.searchElement(keySearch)) {
-//                            System.out.println(YES_ELEMENT);
-//                        } else System.out.println(NO_ELEMENT);
-//                        System.out.print(KEY_WORD + keySearch + SPACE + VALUE);
-//                        System.out.println(dictionary.outputElement(keySearch));
-//                        System.out.println();
-//                        break;
+                    case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
+                        String keySearch = checkWordCycle();
+                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                            workFile.getDictionary(numberOfDictionary);
+                            if (workFile.searchElement(keySearch)) {
+                                System.out.println(YES_ELEMENT);
+                            } else System.out.println(NO_ELEMENT);
+
+                        } else {
+                            if (dictionary.searchElement(keySearch)) {
+                                System.out.println(YES_ELEMENT);
+                            } else System.out.println(NO_ELEMENT);
+                        }
+                        System.out.println();
+                        break;
                 case FIVE_FOR_CHOICE_IN_DICTIONARY_MENU:
                     System.out.println(EXIT_PROGRAM);
                     System.exit(ZERO_FOR_EXIT);
