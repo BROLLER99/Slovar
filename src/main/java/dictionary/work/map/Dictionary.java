@@ -26,50 +26,50 @@ public class Dictionary implements InterfaceDictionary {
         }
     }
 
-    @Override
-    public String outputElement(String key) {
-        try {
-            return dictionary.get(key);
-        } catch (ClassCastException | NullPointerException e) {
-            throw new FileException("Ошибка вывода элемента");
-        }
-    }
+//    @Override
+//    public String outputElement(String key) {
+//        try {
+//            return dictionary.get(key);
+//        } catch (ClassCastException | NullPointerException e) {
+//            throw new FileException("Ошибка вывода элемента");
+//        }
+//    }
+//
+//    @Override
+//    public void deleteElement(String key) {
+//        try {
+//            dictionary.remove(key);
+//        } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
+//            throw new FileException("Ошибка удаления элемента");
+//        }
+//    }
+//
+//    @Override
+//    public boolean searchElement(String key) {
+//        try {
+//            return dictionary.containsKey(key);
+//        } catch (ClassCastException | NullPointerException e) {
+//            throw new FileException("Ошибка поиска элемента");
+//        }
+//    }
+//
+//    @Override
+//    public StringBuilder outputAllElements() {
+//        try {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (Map.Entry<String, String> pair : dictionary.entrySet()) {
+//                String key = pair.getKey();
+//                String value = pair.getValue();
+//                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
+//            }
+//            return stringBuilder;
+//        } catch (IllegalStateException | NullPointerException e) {
+//            throw new FileException("Ошибка вывода всех элементов");
+//        }
+//    }
 
-    @Override
-    public void deleteElement(String key) {
-        try {
-            dictionary.remove(key);
-        } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
-            throw new FileException("Ошибка удаления элемента");
-        }
-    }
-
-    @Override
-    public boolean searchElement(String key) {
-        try {
-            return dictionary.containsKey(key);
-        } catch (ClassCastException | NullPointerException e) {
-            throw new FileException("Ошибка поиска элемента");
-        }
-    }
-
-    @Override
-    public StringBuilder outputAllElements() {
-        try {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Map.Entry<String, String> pair : dictionary.entrySet()) {
-                String key = pair.getKey();
-                String value = pair.getValue();
-                stringBuilder.append(key).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
-            }
-            return stringBuilder;
-        } catch (IllegalStateException | NullPointerException e) {
-            throw new FileException("Ошибка вывода всех элементов");
-        }
-    }
-
-    @Override
-    public Map<String, String> getDictionary() {
-        return dictionary;
-    }
+//    @Override
+//    public Map<String, String> getDictionary() {
+//        return dictionary;
+//    }
 }
