@@ -49,8 +49,8 @@ public class View {
     private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
     private int numberOfDictionary;
-    CheckWord checkWord = new CheckWord();
-    Dictionary dictionary = new Dictionary();
+    InterfaceCheckWord checkWord = new CheckWord();
+    InterfaceDictionary dictionary = new Dictionary();
     WorkFile workFile = new WorkFile();
     private String pattern;
     private Scanner scanner;
@@ -116,7 +116,12 @@ public class View {
                     break;
                 case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
                     String keyDelete = checkWordCycle();
-                    // dictionary.deleteElement(keyDelete);
+                    if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
+                        workFile.getDictionary(numberOfDictionary);
+                        workFile.deleteElement(keyDelete);
+                    } else {
+                        dictionary.deleteElement(keyDelete);
+                    }
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
                     //      tryException();
@@ -146,11 +151,11 @@ public class View {
         }
     }
 
-    /**
-     * Метод проверки на наличие исключения
-     *
-     * @throws FileException возникает при появлении исключения IOException
-     */
+//    /**
+//     * Метод проверки на наличие исключения
+//     *
+//     * @throws FileException возникает при появлении исключения IOException
+//     */
 //    private void tryException() {
 //        try {
 //            if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {

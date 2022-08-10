@@ -20,25 +20,14 @@ public interface InterfaceDictionary {
      */
     void addElement(String key, String value);
 
+
     /**
-     * Метод вывода элемента
+     * Метод удаления элемента
      *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо вывести
-     * @throws FileException if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     * @param key - аргумент, хранящий ключ - слово, который необходимо удалить
      */
-//    String outputElement(String key);
-//
-//    /**
-//     * Метод удаления элемента
-//     *
-//     * @param key - аргумент, хранящий ключ - слово, который необходимо удалить
-//     * @throws FileException if the put operation is not supported by this map(UnsupportedOperationException)
-//     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
-//     *                       if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-//     */
-//    void deleteElement(String key);
-//
+    void deleteElement(String key);
+
     /**
      * Метод поиска элемента
      *

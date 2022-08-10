@@ -3,7 +3,9 @@ package dictionary.work.map;
 import dictionary.work.exeption.FileException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,24 +28,15 @@ public class Dictionary implements InterfaceDictionary {
         }
     }
 
-//    @Override
-//    public String outputElement(String key) {
-//        try {
-//            return dictionary.get(key);
-//        } catch (ClassCastException | NullPointerException e) {
-//            throw new FileException("Ошибка вывода элемента");
-//        }
-//    }
-//
-//    @Override
-//    public void deleteElement(String key) {
-//        try {
-//            dictionary.remove(key);
-//        } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
-//            throw new FileException("Ошибка удаления элемента");
-//        }
-//    }
-//
+    @Override
+    public void deleteElement(String key) {
+        try {
+            dictionary.remove(key);
+        } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
+            throw new FileException("Ошибка удаления элемента");
+        }
+    }
+
     @Override
     public boolean searchElement(String key) {
         try {
@@ -67,9 +60,4 @@ public class Dictionary implements InterfaceDictionary {
             throw new FileException("Ошибка вывода всех элементов");
         }
     }
-
-//    @Override
-//    public Map<String, String> getDictionary() {
-//        return dictionary;
-//    }
 }
