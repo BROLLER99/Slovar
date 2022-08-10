@@ -21,11 +21,11 @@ public interface InterfaceWorkFile {
      */
     void read(int numberOfDictionary);
 
-    /**
-     * Метод записи файла из map
-     *
-     * @param numberOfDictionary аргумент - номер словаря, по которому будет выбран файл, который будет считан с map и записан на диск
-     * @throws FileException If an I/O error occurs(IOException)
-     */
-    void write(int numberOfDictionary);
+//    /**
+//     * Метод записи файла из map
+//     *
+//     * @param numberOfDictionary аргумент - номер словаря, по которому будет выбран файл, который будет считан с map и записан на диск
+//     * @throws FileException If an I/O error occurs(IOException)
+//     */
+//    void write(int numberOfDictionary);
 }

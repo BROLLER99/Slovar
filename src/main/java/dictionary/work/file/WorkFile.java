@@ -1,43 +1,74 @@
 package dictionary.work.file;
 
-import dictionary.work.map.Dictionary;
 import dictionary.work.exeption.FileException;
+import dictionary.work.map.InterfaceDictionary;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
+import java.io.*;
 
 /**
- * Класс реализует методы интерфейса InterfaceWorkFile
+ * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
  */
-public class WorkFile implements InterfaceWorkFile {
+public class WorkFile implements InterfaceDictionary {
+    private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
+    private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";
+    private static final String SEARCH_EXCEPTION = "Ошибка поиска элемента";
+    private static final String OUTPUT_ALL_EXCEPTION = "Ошибка вывода всех элементов";
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";
     private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
     private static final int ONE_FOR_SPLIT = 1;
     private static final int ZERO_FOR_SPLIT = 0;
     private static final String KEY_VALUE_SEPARATOR = ":";
-    Dictionary dictionary = new Dictionary();
+    private int numberOfDictionary;
+    private String nameFile;
 
+    /**
+     * Реализация метода добавления записи в файл, интерфейса InterfaceDictionary
+     *
+     * @param key   - аргумент, хранящий ключ - слово, который необходимо добавить
+     * @param value - аргумент, хранящий слово - значение, который необходимо добавить
+     * @throws FileException If a security manager exists and method denies write access to the file (SecurityException)
+     *                       If an I/O error occurs(IOException)
+     */
     @Override
-    public void read(int numberOfDictionary) {
-        String nameFile;
-        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
-            nameFile = WORDS_FILE;
-        } else nameFile = NUMBERS_FILE;
-
-        File file = new File(nameFile);
-        if (!file.exists()) {
-            write(numberOfDictionary);
+    public void addElement(String key, String value) {
+        nameOfFile(numberOfDictionary);
+        try {
+            File file = new File(nameFile);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file, true);
+            fw.write(key + KEY_VALUE_SEPARATOR + value + "\n");
+            fw.close();
+        } catch (SecurityException | IOException e) {
+            throw new FileException(ADD_EXCEPTION);
         }
+    }
+
+    /**
+     * Метод получения номера словаря выбранного пользователем
+     *
+     * @param numberOfDictionary - номер словаря
+     */
+    public void getDictionary(int numberOfDictionary) {
+        this.numberOfDictionary = numberOfDictionary;
+    }
+
+    /**
+     * Реализация метода вывода всех записей из файла, интерфейса InterfaceDictionary
+     *
+     * @return возвращает строку в которой содержаться все элементы
+     * @throws FileException If an I/O error occurs(IOException)
+     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     */
+    @Override
+    public StringBuilder outputAllElements() {
+        nameOfFile(numberOfDictionary);
+        File file = new File(nameFile);
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-
+            StringBuilder stringBuilder = new StringBuilder();
             String line;
-
             while ((line = br.readLine()) != null) {
 
                 String[] parts = line.split(KEY_VALUE_SEPARATOR);
@@ -46,32 +77,91 @@ public class WorkFile implements InterfaceWorkFile {
                 String value = parts[ONE_FOR_SPLIT].trim();
 
                 if (!name.equals("") && !value.equals(""))
-                    dictionary.getDictionary().put(name, value);
+                    stringBuilder.append(name).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
             }
-
-        } catch (IllegalArgumentException | NullPointerException | ClassCastException | UnsupportedOperationException |
-                 IOException e) {
-            throw new FileException("Ошибка чтения файла");
+            return stringBuilder;
+        } catch (NullPointerException | IOException e) {
+            throw new FileException(OUTPUT_ALL_EXCEPTION);
         }
     }
 
+    /**
+     * Реализация метода поиска записи в файле, интерфейса InterfaceDictionary
+     *
+     * @param key - аргумент, хранящий ключ - слово, который необходимо найти
+     * @return true если элемент найден и false если нет
+     * @throws FileException If an I/O error occurs(IOException)
+     */
     @Override
-    public void write(int numberOfDictionary) {
-        String nameFile;
-        if (numberOfDictionary == 1) {
-            nameFile = WORDS_FILE;
-        } else nameFile = NUMBERS_FILE;
-
+    public boolean searchElement(String key) {
+        nameOfFile(numberOfDictionary);
         File file = new File(nameFile);
-        try (BufferedWriter bf = new BufferedWriter(new FileWriter(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
 
-            for (Map.Entry<String, String> entry : dictionary.getDictionary().entrySet()) {
-                bf.write(entry.getKey() + KEY_VALUE_SEPARATOR + entry.getValue());
-                bf.newLine();
+                String[] parts = line.split(KEY_VALUE_SEPARATOR);
+
+                String name = parts[ZERO_FOR_SPLIT].trim();
+
+                if (name.equals(key)) {
+                    return true;
+                }
             }
-            bf.flush();
+            return false;
         } catch (IOException e) {
-            throw new FileException("Ошибка записи файла");
+            throw new FileException(SEARCH_EXCEPTION);
         }
+    }
+
+    /**
+     * Реализация метода удаления записи в файле, интерфейса InterfaceDictionary
+     *
+     * @param key - аргумент, хранящий ключ - слово, который необходимо удалить
+     * @throws FileException If an I/O error occurs(IOException)
+     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     *                       If a security manager exists and method denies write access to the file (SecurityException)
+     */
+    @Override
+    public void deleteElement(String key) {
+        nameOfFile(numberOfDictionary);
+        File file = new File(nameFile);
+        File tmpFile = new File("tmp" + nameFile);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(tmpFile));
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+
+                String[] parts = line.split(KEY_VALUE_SEPARATOR);
+
+                String name = parts[ZERO_FOR_SPLIT].trim();
+
+                if (!name.equals(key)) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+
+            }
+            bw.close();
+            br.close();
+            file.delete();
+            tmpFile.renameTo(file);
+
+        } catch (NullPointerException | SecurityException | IOException e) {
+            throw new FileException(DELETE_EXCEPTION);
+        }
+    }
+
+    /**
+     * Метод определения имени файла словаря по номеру словаря
+     *
+     * @param numberOfDictionary - номер словаря
+     * @return возвращает имя файла
+     */
+    private String nameOfFile(int numberOfDictionary) {
+        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+            return nameFile = WORDS_FILE;
+        } else return nameFile = NUMBERS_FILE;
     }
 }
