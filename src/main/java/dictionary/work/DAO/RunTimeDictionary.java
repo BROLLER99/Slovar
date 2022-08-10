@@ -1,4 +1,4 @@
-package dictionary.work.map;
+package dictionary.work.DAO;
 
 import dictionary.work.exeption.FileException;
 
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с map
  */
-public class Dictionary implements InterfaceDictionary {
+public class RunTimeDictionary implements InterfaceForDictionary {
     private static final String KEY_VALUE_SEPARATOR = ":";
     private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
     private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";

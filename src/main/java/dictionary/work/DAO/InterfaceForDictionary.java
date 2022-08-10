@@ -1,9 +1,9 @@
-package dictionary.work.map;
+package dictionary.work.DAO;
 
 /**
  * Интерфейс определяет методы для работы со словарем
  */
-public interface InterfaceDictionary {
+public interface InterfaceForDictionary {
     /**
      * Метод добавление элемента
      *

@@ -1,9 +1,9 @@
 package dictionary.work.console;
 
 import dictionary.work.exeption.FileException;
-import dictionary.work.map.InterfaceDictionary;
-import dictionary.work.map.Dictionary;
-import dictionary.work.file.WorkFile;
+import dictionary.work.DAO.InterfaceForDictionary;
+import dictionary.work.DAO.RunTimeDictionary;
+import dictionary.work.DAO.LocalDictionary;
 
 import java.io.Console;
 import java.util.Objects;
@@ -48,8 +48,8 @@ public class View {
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
     private int numberOfDictionary;
     InterfaceCheckWord checkWord = new CheckWord();
-    InterfaceDictionary dictionary = new Dictionary();
-    WorkFile workFile = new WorkFile();
+    InterfaceForDictionary dictionary = new RunTimeDictionary();
+    LocalDictionary dictionaryInStorage = new LocalDictionary();
     private String pattern;
     private Scanner scanner;
 
@@ -93,8 +93,8 @@ public class View {
                     case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
                         System.out.println(ALL_WORDS);
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            System.out.println(workFile.outputAllElements());
+                            dictionaryInStorage.getDictionary(numberOfDictionary);
+                            System.out.println(dictionaryInStorage.outputAllElements());
                         } else {
                             System.out.println(dictionary.outputAllElements());
                         }
@@ -104,8 +104,8 @@ public class View {
                         System.out.println(VALUE);
                         String valueWord = inputWord();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            workFile.addElement(keyWord, valueWord);
+                            dictionaryInStorage.getDictionary(numberOfDictionary);
+                            dictionaryInStorage.addElement(keyWord, valueWord);
                         } else {
                             dictionary.addElement(keyWord, valueWord);
                         }
@@ -115,8 +115,8 @@ public class View {
                     case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
                         String keyDelete = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            workFile.deleteElement(keyDelete);
+                            dictionaryInStorage.getDictionary(numberOfDictionary);
+                            dictionaryInStorage.deleteElement(keyDelete);
                         } else {
                             dictionary.deleteElement(keyDelete);
                         }
@@ -126,8 +126,8 @@ public class View {
                     case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
                         String keySearch = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            if (workFile.searchElement(keySearch)) {
+                            dictionaryInStorage.getDictionary(numberOfDictionary);
+                            if (dictionaryInStorage.searchElement(keySearch)) {
                                 System.out.println(YES_ELEMENT);
                             } else System.out.println(NO_ELEMENT);
 
