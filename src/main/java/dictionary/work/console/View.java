@@ -62,7 +62,7 @@ public class View {
     /**
      * Метод предоставляет пользователю выбор действия из главного меню.
      */
-    public void chooseDictionary() {
+    public void startWorkingWithDictionary() {
         while (true) {
             System.out.println(MAIN_MENU);
             String userChoice = inputWord();
@@ -82,12 +82,6 @@ public class View {
                 System.out.println(DOES_NOT_EXIST);
             System.out.println();
         }
-    }
-
-    /**
-     * Метод предоставляет пользователю выбор действия из меню словаря
-     */
-    public void chooseAction() {
         while (true) {
             try {
                 if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {

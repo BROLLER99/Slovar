@@ -26,7 +26,6 @@ public class Main {
         LocalDictionary localDictionary = new LocalDictionary();
         RunTimeDictionary runTimeDictionary = new RunTimeDictionary();
         View view = new View(checkWord, runTimeDictionary, localDictionary);
-        view.chooseDictionary();
-        view.chooseAction();
+        view.startWorkingWithDictionary();
     }
 }
