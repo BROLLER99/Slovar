@@ -1,9 +1,8 @@
 package dictionary.work.console;
 
 import dictionary.work.exeption.FileException;
-import dictionary.work.map.InterfaceDictionary;
-import dictionary.work.map.Dictionary;
-import dictionary.work.file.WorkFile;
+import dictionary.work.DAO.RunTimeDictionary;
+import dictionary.work.DAO.LocalDictionary;
 
 import java.io.Console;
 import java.util.Objects;
@@ -47,11 +46,18 @@ public class View {
     private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
     private int numberOfDictionary;
-    InterfaceCheckWord checkWord = new CheckWord();
-    InterfaceDictionary dictionary = new Dictionary();
-    WorkFile workFile = new WorkFile();
+    private CheckWord checkWord;
+    private RunTimeDictionary runTimeDictionary;
+    private LocalDictionary localDictionary;
+
     private String pattern;
     private Scanner scanner;
+
+    public View(CheckWord checkWord, RunTimeDictionary runTimeDictionary, LocalDictionary localDictionary) {
+        this.checkWord = checkWord;
+        this.runTimeDictionary = runTimeDictionary;
+        this.localDictionary = localDictionary;
+    }
 
     /**
      * Метод предоставляет пользователю выбор действия из главного меню.
@@ -93,10 +99,10 @@ public class View {
                     case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
                         System.out.println(ALL_WORDS);
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            System.out.println(workFile.outputAllElements());
+                            localDictionary.getDictionary(numberOfDictionary);
+                            System.out.println(localDictionary.outputAllElements());
                         } else {
-                            System.out.println(dictionary.outputAllElements());
+                            System.out.println(runTimeDictionary.outputAllElements());
                         }
                         break;
                     case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
@@ -104,10 +110,10 @@ public class View {
                         System.out.println(VALUE);
                         String valueWord = inputWord();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            workFile.addElement(keyWord, valueWord);
+                            localDictionary.getDictionary(numberOfDictionary);
+                            localDictionary.addElement(keyWord, valueWord);
                         } else {
-                            dictionary.addElement(keyWord, valueWord);
+                            runTimeDictionary.addElement(keyWord, valueWord);
                         }
                         System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
                         System.out.println();
@@ -115,10 +121,10 @@ public class View {
                     case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
                         String keyDelete = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            workFile.deleteElement(keyDelete);
+                            localDictionary.getDictionary(numberOfDictionary);
+                            localDictionary.deleteElement(keyDelete);
                         } else {
-                            dictionary.deleteElement(keyDelete);
+                            runTimeDictionary.deleteElement(keyDelete);
                         }
                         System.out.println(KEY_WORD + keyDelete + DELETE);
                         System.out.println();
@@ -126,13 +132,13 @@ public class View {
                     case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
                         String keySearch = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            workFile.getDictionary(numberOfDictionary);
-                            if (workFile.searchElement(keySearch)) {
+                            localDictionary.getDictionary(numberOfDictionary);
+                            if (localDictionary.searchElement(keySearch)) {
                                 System.out.println(YES_ELEMENT);
                             } else System.out.println(NO_ELEMENT);
 
                         } else {
-                            if (dictionary.searchElement(keySearch)) {
+                            if (runTimeDictionary.searchElement(keySearch)) {
                                 System.out.println(YES_ELEMENT);
                             } else System.out.println(NO_ELEMENT);
                         }
