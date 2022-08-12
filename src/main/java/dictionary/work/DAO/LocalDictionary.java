@@ -20,6 +20,7 @@ public class LocalDictionary implements InterfaceForDictionary {
     private static final String OUTPUT_ALL_EXCEPTION = "Ошибка вывода всех элементов";
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";
+    private static final String TMP_FILE="tmp";
     private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
     private static final int ONE_FOR_SPLIT = 1;
     private static final int ZERO_FOR_SPLIT = 0;
@@ -131,7 +132,7 @@ public class LocalDictionary implements InterfaceForDictionary {
     public void deleteElement(String key) {
         nameOfFile(numberOfDictionary);
         File file = new File(nameFile);
-        File tmpFile = new File("tmp" + nameFile);
+        File tmpFile = new File(TMP_FILE + nameFile);
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tmpFile));
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
