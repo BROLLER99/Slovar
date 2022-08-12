@@ -60,9 +60,9 @@ public class View {
     }
 
     /**
-     * Метод предоставляет пользователю выбор действия из главного меню.
+     * Метод обеспечивает ввод-вывод в консоль запросов для работы со словарем
      */
-    public void chooseDictionary() {
+    public void startWorkingWithDictionary() {
         while (true) {
             System.out.println(MAIN_MENU);
             String userChoice = inputWord();
@@ -82,12 +82,6 @@ public class View {
                 System.out.println(DOES_NOT_EXIST);
             System.out.println();
         }
-    }
-
-    /**
-     * Метод предоставляет пользователю выбор действия из меню словаря
-     */
-    public void chooseAction() {
         while (true) {
             try {
                 if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
@@ -95,8 +89,7 @@ public class View {
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
                 String userChoice = inputWord();
-                switch (userChoice) {
-                    case ONE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                    if(Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                         System.out.println(ALL_WORDS);
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             localDictionary.getDictionary(numberOfDictionary);
@@ -104,8 +97,8 @@ public class View {
                         } else {
                             System.out.println(runTimeDictionary.outputAllElements());
                         }
-                        break;
-                    case TWO_FOR_CHOICE_IN_DICTIONARY_MENU:
+                    }
+                    else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                         String keyWord = checkWordCycle();
                         System.out.println(VALUE);
                         String valueWord = inputWord();
@@ -117,8 +110,8 @@ public class View {
                         }
                         System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
                         System.out.println();
-                        break;
-                    case THREE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                    }
+                    else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                         String keyDelete = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             localDictionary.getDictionary(numberOfDictionary);
@@ -128,8 +121,8 @@ public class View {
                         }
                         System.out.println(KEY_WORD + keyDelete + DELETE);
                         System.out.println();
-                        break;
-                    case FOUR_FOR_CHOICE_IN_DICTIONARY_MENU:
+                    }
+                    else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                         String keySearch = checkWordCycle();
                         if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
                             localDictionary.getDictionary(numberOfDictionary);
@@ -143,11 +136,12 @@ public class View {
                             } else System.out.println(NO_ELEMENT);
                         }
                         System.out.println();
-                        break;
-                    case FIVE_FOR_CHOICE_IN_DICTIONARY_MENU:
+                    }
+                    else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                         System.out.println(EXIT_PROGRAM);
                         System.exit(ZERO_FOR_EXIT);
-                    default:
+                    }
+                    else{
                         System.out.println(DOES_NOT_EXIST);
                         System.out.println();
                 }
