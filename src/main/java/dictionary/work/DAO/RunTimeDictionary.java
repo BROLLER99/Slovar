@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с map
  */
-public class RunTimeDictionary implements InterfaceForDictionary {
+public class RunTimeDictionary implements Dictionary {
     private static final String KEY_VALUE_SEPARATOR = ":";
     private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
     private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";
@@ -93,5 +93,10 @@ public class RunTimeDictionary implements InterfaceForDictionary {
         } catch (IllegalStateException | NullPointerException e) {
             throw new FileException(OUTPUT_ALL_EXCEPTION);
         }
+    }
+
+    @Override
+    public void setNumberOfDictionary(int numberOfDictionary) {
+
     }
 }

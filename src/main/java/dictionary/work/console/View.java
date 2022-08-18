@@ -1,14 +1,12 @@
 package dictionary.work.console;
 
+import dictionary.work.DAO.Dictionary;
 import dictionary.work.exeption.FileException;
-import dictionary.work.DAO.RunTimeDictionary;
-import dictionary.work.DAO.LocalDictionary;
 
 import java.io.Console;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static dictionary.Main.argsCommandLine;
 
 /**
  * Класс для работы с пользователем через консоль, предоставляет пользователю выбор словаря и действий внутри него
@@ -34,7 +32,6 @@ public class View {
     private static final String ONE_FOR_USER_CHOICE_IN_MAIN_MENU = "1";
     private static final String TWO_FOR_USER_CHOICE_IN_MAIN_MENU = "2";
     private static final String ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = "0";
-    private static final int ONE_FOR_COMMAND_LINE = 1;
     private static final int FIRST_NUMBER_OF_DICTIONARY = 1;
     private static final int SECOND_NUMBER_OF_DICTIONARY = 2;
     private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
@@ -46,26 +43,26 @@ public class View {
     private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
     private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
     private int numberOfDictionary;
-    private CheckWord checkWord;
-    private RunTimeDictionary runTimeDictionary;
-    private LocalDictionary localDictionary;
+    private InterfaceCheckWord checkWord;
+    private Dictionary storage;
+
 
     private String pattern;
     private Scanner scanner;
 
-    public View(CheckWord checkWord, RunTimeDictionary runTimeDictionary, LocalDictionary localDictionary) {
+    public View(InterfaceCheckWord checkWord, Dictionary storage) {
         this.checkWord = checkWord;
-        this.runTimeDictionary = runTimeDictionary;
-        this.localDictionary = localDictionary;
+        this.storage = storage;
     }
 
     /**
      * Метод обеспечивает ввод-вывод в консоль запросов для работы со словарем
      */
-    public void startWorkingWithDictionary() {
+    public void startApp() {
         while (true) {
             System.out.println(MAIN_MENU);
             String userChoice = inputWord();
+
             if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 pattern = FIRST_PATTERN;
                 numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
@@ -89,61 +86,39 @@ public class View {
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
                 String userChoice = inputWord();
-                    if(Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                        System.out.println(ALL_WORDS);
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            localDictionary.getDictionary(numberOfDictionary);
-                            System.out.println(localDictionary.outputAllElements());
-                        } else {
-                            System.out.println(runTimeDictionary.outputAllElements());
-                        }
+                if (Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
+                    System.out.println(ALL_WORDS);
+                    storage.setNumberOfDictionary(numberOfDictionary);
+                    System.out.println(storage.outputAllElements());
+                } else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
+                    String keyWord = checkWordCycle();
+                    System.out.println(VALUE);
+                    String valueWord = inputWord();
+                    storage.setNumberOfDictionary(numberOfDictionary);
+                    storage.addElement(keyWord, valueWord);
+                    System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
+                    System.out.println();
+                } else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
+                    String keyDelete = checkWordCycle();
+                    storage.setNumberOfDictionary(numberOfDictionary);
+                    storage.deleteElement(keyDelete);
+                    System.out.println(KEY_WORD + keyDelete + DELETE);
+                    System.out.println();
+                } else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
+                    String keySearch = checkWordCycle();
+                    storage.setNumberOfDictionary(numberOfDictionary);
+                    if (storage.searchElement(keySearch)) {
+                        System.out.println(YES_ELEMENT);
+                    } else {
+                        System.out.println(NO_ELEMENT);
                     }
-                    else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                        String keyWord = checkWordCycle();
-                        System.out.println(VALUE);
-                        String valueWord = inputWord();
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            localDictionary.getDictionary(numberOfDictionary);
-                            localDictionary.addElement(keyWord, valueWord);
-                        } else {
-                            runTimeDictionary.addElement(keyWord, valueWord);
-                        }
-                        System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
-                        System.out.println();
-                    }
-                    else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                        String keyDelete = checkWordCycle();
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            localDictionary.getDictionary(numberOfDictionary);
-                            localDictionary.deleteElement(keyDelete);
-                        } else {
-                            runTimeDictionary.deleteElement(keyDelete);
-                        }
-                        System.out.println(KEY_WORD + keyDelete + DELETE);
-                        System.out.println();
-                    }
-                    else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                        String keySearch = checkWordCycle();
-                        if (argsCommandLine == ONE_FOR_COMMAND_LINE) {
-                            localDictionary.getDictionary(numberOfDictionary);
-                            if (localDictionary.searchElement(keySearch)) {
-                                System.out.println(YES_ELEMENT);
-                            } else System.out.println(NO_ELEMENT);
-
-                        } else {
-                            if (runTimeDictionary.searchElement(keySearch)) {
-                                System.out.println(YES_ELEMENT);
-                            } else System.out.println(NO_ELEMENT);
-                        }
-                        System.out.println();
-                    }
-                    else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                        System.out.println(EXIT_PROGRAM);
-                        System.exit(ZERO_FOR_EXIT);
-                    }
-                    else{
-                        System.out.println(DOES_NOT_EXIST);
-                        System.out.println();
+                    System.out.println();
+                } else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
+                    System.out.println(EXIT_PROGRAM);
+                    System.exit(ZERO_FOR_EXIT);
+                } else {
+                    System.out.println(DOES_NOT_EXIST);
+                    System.out.println();
                 }
             } catch (FileException e) {
                 System.out.println(e.getMessage());
@@ -159,7 +134,7 @@ public class View {
     private String inputWord() {
         Console console = System.console();
         if (console == null) {
-            return createScanner().nextLine();
+            return getScanner().nextLine();
         } else {
             return console.readLine();
         }
@@ -170,7 +145,7 @@ public class View {
      *
      * @return возвращает Scanner в зависимости от условия
      */
-    private Scanner createScanner() {
+    private Scanner getScanner() {
         if (scanner == null) {
             return new Scanner(System.in);
         } else return scanner;
