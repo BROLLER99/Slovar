@@ -3,7 +3,7 @@ package dictionary.work.DAO;
 /**
  * Интерфейс определяет методы для работы со словарем
  */
-public interface InterfaceForDictionary {
+public interface Dictionary {
     /**
      * Метод добавление элемента
      *
@@ -31,4 +31,11 @@ public interface InterfaceForDictionary {
      * Метод для вывода всех элементов
      */
     StringBuilder outputAllElements();
+
+    /**
+     * Метод получения номера выбранного словаря
+     *
+     * @param numberOfDictionary - аргумент, хранящий номер словаря
+     */
+    void setNumberOfDictionary(int numberOfDictionary);
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
  */
-public class LocalDictionary implements InterfaceForDictionary {
+public class LocalDictionary implements Dictionary {
     private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
     private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";
     private static final String SEARCH_EXCEPTION = "Ошибка поиска элемента";
@@ -57,7 +57,7 @@ public class LocalDictionary implements InterfaceForDictionary {
      *
      * @param numberOfDictionary - номер словаря
      */
-    public void getDictionary(int numberOfDictionary) {
+    public void setNumberOfDictionary(int numberOfDictionary) {
         this.numberOfDictionary = numberOfDictionary;
     }
 
