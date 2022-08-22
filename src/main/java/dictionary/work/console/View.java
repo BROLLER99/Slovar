@@ -1,6 +1,7 @@
 package dictionary.work.console;
 
 import dictionary.work.DAO.Dictionary;
+import dictionary.work.console.commands.Invoker;
 import dictionary.work.exeption.FileException;
 
 import java.io.Console;
@@ -45,14 +46,15 @@ public class View {
     private int numberOfDictionary;
     private InterfaceCheckWord checkWord;
     private Dictionary storage;
-
+    private Invoker invoker;
 
     private String pattern;
     private Scanner scanner;
 
-    public View(InterfaceCheckWord checkWord, Dictionary storage) {
+    public View(InterfaceCheckWord checkWord, Dictionary storage, Invoker invoker) {
         this.checkWord = checkWord;
         this.storage = storage;
+        this.invoker = invoker;
     }
 
     /**
@@ -86,32 +88,37 @@ public class View {
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
                 String userChoice = inputWord();
+
                 if (Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                     System.out.println(ALL_WORDS);
-                    storage.setNumberOfDictionary(numberOfDictionary);
-                    System.out.println(storage.outputAllElements());
+
+                    invoker.setNumberOfDictionary(numberOfDictionary);
+                    invoker.outputAllElements();
+
                 } else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                     String keyWord = checkWordCycle();
                     System.out.println(VALUE);
                     String valueWord = inputWord();
-                    storage.setNumberOfDictionary(numberOfDictionary);
-                    storage.addElement(keyWord, valueWord);
+
+                    invoker.setNumberOfDictionary(numberOfDictionary);
+                    invoker.addElement(keyWord, valueWord);
+
                     System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
                     System.out.println();
                 } else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                     String keyDelete = checkWordCycle();
-                    storage.setNumberOfDictionary(numberOfDictionary);
-                    storage.deleteElement(keyDelete);
+
+                    invoker.setNumberOfDictionary(numberOfDictionary);
+                    invoker.deleteElement(keyDelete);
+
                     System.out.println(KEY_WORD + keyDelete + DELETE);
                     System.out.println();
                 } else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                     String keySearch = checkWordCycle();
-                    storage.setNumberOfDictionary(numberOfDictionary);
-                    if (storage.searchElement(keySearch)) {
-                        System.out.println(YES_ELEMENT);
-                    } else {
-                        System.out.println(NO_ELEMENT);
-                    }
+
+                    invoker.setNumberOfDictionary(numberOfDictionary);
+                    invoker.searchElement(keySearch);
+
                     System.out.println();
                 } else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
                     System.out.println(EXIT_PROGRAM);

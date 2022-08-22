@@ -33,7 +33,7 @@ public interface Dictionary {
     StringBuilder outputAllElements();
 
     /**
-     * Метод получения номера выбранного словаря
+     * Метод установки номера выбранного словаря
      *
      * @param numberOfDictionary - аргумент, хранящий номер словаря
      */

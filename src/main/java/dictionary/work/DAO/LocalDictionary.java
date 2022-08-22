@@ -25,7 +25,7 @@ public class LocalDictionary implements Dictionary {
     private static final int ONE_FOR_SPLIT = 1;
     private static final int ZERO_FOR_SPLIT = 0;
     private static final String KEY_VALUE_SEPARATOR = ":";
-    private int numberOfDictionary;
+    private static int numberOfDictionary;
     private String nameFile;
 
     /**
