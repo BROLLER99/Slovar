@@ -51,6 +51,12 @@ public class View {
     private String pattern;
     private Scanner scanner;
 
+    /**
+     * Конструктор задает состояние объекта view необходимыми параметрами
+     * @param checkWord - объект проверяющий вводимое слово
+     * @param storage - объект хранящий тип хранения словаря
+     * @param invoker - объект для работы с запросами
+     */
     public View(InterfaceCheckWord checkWord, Dictionary storage, Invoker invoker) {
         this.checkWord = checkWord;
         this.storage = storage;
