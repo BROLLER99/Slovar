@@ -1,11 +1,8 @@
 package dictionary.work.console;
 
-import dictionary.work.DAO.Dictionary;
 import dictionary.work.console.commands.Invoker;
 import dictionary.work.exeption.FileException;
-import java.io.Console;
 import java.util.Objects;
-import java.util.Scanner;
 
 
 /**
@@ -20,15 +17,6 @@ public class View {
     private static final String SECOND_DICTIONARY_AND_TERMS = "Выбран словарь № 2. \nВ данном словаре длина слов может быть только 5 символа и эти символы только цифры.";
     private static final String EXIT_PROGRAM = "Выход из программы. ";
     private static final String DOES_NOT_EXIST = "Такого пункта меню не существует! ";
-    private static final String KEY_WORD = "Ключ слово: ";
-    private static final String VALUE = "Слово перевод ";
-    private static final String ADD_ENTRY = "Добавлена запись: %s %s %s %n";
-    private static final String DELETE = " удалено ";
-    private static final String ALL_WORDS = "Все слова выведены: ";
-    private static final String KEY_VALUE_SEPARATOR = ":";
-    private static final String BAD_WORD = "Недопустимое слово.";
-    private static final String YES_ELEMENT = "Такой элемент есть! ";
-    private static final String NO_ELEMENT = "Такого элемента нет ";
     private static final String ONE_FOR_USER_CHOICE_IN_MAIN_MENU = "1";
     private static final String TWO_FOR_USER_CHOICE_IN_MAIN_MENU = "2";
     private static final String ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = "0";
@@ -37,24 +25,22 @@ public class View {
     private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
     private static final String SECOND_PATTERN = "[0-9]{5}";
     private static final int ZERO_FOR_EXIT = 0;
-    private static final String NUMBER_FOR_OUTPUT_ALL_ELEMENTS = "1";
-    private static final String NUMBER_FOR_ADD_ELEMENT = "2";
-    private static final String NUMBER_FOR_DELETE_ELEMENT = "3";
-    private static final String NUMBER_FOR_SEARCH_ELEMENT = "4";
-    private static final String NUMBER_FOR_EXIT = "5";
+    private static final int NUMBER_FOR_OUTPUT_ALL_ELEMENTS = 1;
+    private static final int NUMBER_FOR_ADD_ELEMENT = 2;
+    private static final int NUMBER_FOR_DELETE_ELEMENT = 3;
+    private static final int NUMBER_FOR_SEARCH_ELEMENT = 4;
+    private static final int NUMBER_FOR_EXIT = 5;
 
     private static int numberOfDictionary;
-    private Dictionary storage;
-    private Invoker invoker;
+    private final Invoker invoker;
     private static String pattern;
-    private Scanner scanner;
 
     /**
      * Конструктор задает состояние объекта view необходимыми параметрами
      *
-     * @param invoker   - объект для работы с запросами
+     * @param invoker - объект для работы с запросами
      */
-    public View( Invoker invoker) {
+    public View(Invoker invoker) {
         this.invoker = invoker;
     }
 
@@ -64,7 +50,7 @@ public class View {
     public void startApp() {
         while (true) {
             System.out.println(MAIN_MENU);
-            String userChoice = inputWord();
+            String userChoice = invoker.inputWords();
 
             if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 pattern = FIRST_PATTERN;
@@ -89,19 +75,19 @@ public class View {
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
 
-                int userChoice = Integer.parseInt(inputWord());
+                int userChoice = Integer.parseInt(invoker.inputWords());
                 Commands[] commands = Commands.values();
                 for (Commands c : commands) {
                     if (c.getNumberOfCommand() == userChoice) {
-                        if (c.getNumberOfCommand() == 1) {
+                        if (c.getNumberOfCommand() == NUMBER_FOR_OUTPUT_ALL_ELEMENTS) {
                             invoker.outputAllElements();
-                        } else if (c.getNumberOfCommand() == 2) {
+                        } else if (c.getNumberOfCommand() == NUMBER_FOR_ADD_ELEMENT) {
                             invoker.addElement();
-                        } else if (c.getNumberOfCommand() == 3) {
+                        } else if (c.getNumberOfCommand() == NUMBER_FOR_DELETE_ELEMENT) {
                             invoker.deleteElement();
-                        } else if (c.getNumberOfCommand() == 4) {
+                        } else if (c.getNumberOfCommand() == NUMBER_FOR_SEARCH_ELEMENT) {
                             invoker.searchElement();
-                        } else if (c.getNumberOfCommand() == 5) {
+                        } else if (c.getNumberOfCommand() == NUMBER_FOR_EXIT) {
                             System.exit(ZERO_FOR_EXIT);
                         }
                     }
@@ -112,28 +98,9 @@ public class View {
         }
     }
 
-    private String inputWord() {
-        Console console = System.console();
-        if (console == null) {
-            return getScanner().nextLine();
-        } else {
-            return console.readLine();
-        }
-    }
-
-    /**
-     * Метод проверяет наличие Scanner и создает его если его нет
-     *
-     * @return возвращает Scanner в зависимости от условия
-     */
-    private Scanner getScanner() {
-        if (scanner == null) {
-            return new Scanner(System.in);
-        } else return scanner;
-    }
-
     /**
      * Метод геттер возвращает номер выбранного словаря
+     *
      * @return numberOfDictionary - номер выбранного словаря
      */
     public static int getNumberOfDictionary() {
@@ -141,7 +108,8 @@ public class View {
     }
 
     /**
-     * геттер возвращает паттерн выбранного словаря
+     * Метод геттер возвращает паттерн выбранного словаря
+     *
      * @return pattern - паттерн выбранного словаря
      */
     public static String getPattern() {

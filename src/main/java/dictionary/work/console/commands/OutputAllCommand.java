@@ -5,20 +5,20 @@ import dictionary.work.DAO.Dictionary;
  * Класс реализует метод интерфейса Command выводом всех записей из словаря
  */
 public class OutputAllCommand implements Command{
-    private Dictionary storage;
+    private final Dictionary typeOfStorage;
 
     /**
      * Конструктор задает состояние объекта необходимыми параметрами для вывода всех записей из словаря
-     * @param storage - объект хранящий тип хранения словаря
+     * @param typeOfStorage - объект хранящий тип хранения словаря
      */
-    public OutputAllCommand(Dictionary storage) {
-        this.storage = storage;
+    public OutputAllCommand(Dictionary typeOfStorage) {
+        this.typeOfStorage = typeOfStorage;
     }
     /**
      * Реализация метода выполнения команды(вывод всех записей) интерфейса Command
      */
     @Override
     public void execute() {
-        System.out.println(storage.outputAllElements());
+        System.out.println(typeOfStorage.outputAllElements());
     }
 }

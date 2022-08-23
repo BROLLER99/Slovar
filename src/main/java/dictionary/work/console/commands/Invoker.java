@@ -11,23 +11,25 @@ import static dictionary.work.console.View.getPattern;
  * Класс для вызова команд словаря
  */
 public class Invoker {
-    private Dictionary storage;
+    private final Dictionary typeOfStorage;
     private Scanner scanner;
+    private static final String KEY_WORD = "Ключ слово:";
+    private static final String BAD_WORD = "Неправильно ввели слово";
 
     /**
      * Конструктор задает состояние объекта invoker
      *
-     * @param storage - объект хранящий тип хранения словаря
+     * @param typeOfStorage - объект хранящий тип хранения словаря
      */
-    public Invoker(Dictionary storage) {
-        this.storage = storage;
+    public Invoker(Dictionary typeOfStorage) {
+        this.typeOfStorage = typeOfStorage;
     }
 
     /**
      * Метод обращается к команде AddCommand для выполнения запроса addElement
      */
     public void addElement() {
-        Command addCommand = new AddCommand(storage, checkWordCycle(), inputWord());
+        Command addCommand = new AddCommand(typeOfStorage, checkWordCycle(), inputWord());
         addCommand.execute();
     }
 
@@ -35,7 +37,7 @@ public class Invoker {
      * Метод обращается к команде DeleteCommand для выполнения запроса deleteElement
      */
     public void deleteElement() {
-        Command deleteCommand = new DeleteCommand(storage, checkWordCycle());
+        Command deleteCommand = new DeleteCommand(typeOfStorage, checkWordCycle());
         deleteCommand.execute();
     }
 
@@ -43,7 +45,7 @@ public class Invoker {
      * Метод обращается к команде SearchCommand для выполнения запроса searchElement
      */
     public void searchElement() {
-        Command searchCommand = new SearchCommand(storage, checkWordCycle());
+        Command searchCommand = new SearchCommand(typeOfStorage, checkWordCycle());
         searchCommand.execute();
     }
 
@@ -51,8 +53,16 @@ public class Invoker {
      * Метод обращается к команде OutputAllCommand для выполнения запроса outputAllElements
      */
     public void outputAllElements() {
-        Command outputAllCommand = new OutputAllCommand(storage);
+        Command outputAllCommand = new OutputAllCommand(typeOfStorage);
         outputAllCommand.execute();
+    }
+
+    /**
+     * Метод
+     * @return
+     */
+    public String inputWords(){
+        return inputWord();
     }
 
     private String inputWord() {
@@ -73,12 +83,12 @@ public class Invoker {
     private String checkWordCycle() {
         String keyWord;
         while (true) {
-            System.out.println("KEY_WORD");
+            System.out.println(KEY_WORD);
             keyWord = inputWord();
             if (keyWord.matches(getPattern())) {
                 return keyWord;
             } else {
-                System.out.println("BAD_WORD");
+                System.out.println(BAD_WORD);
             }
         }
     }

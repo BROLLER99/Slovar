@@ -7,20 +7,20 @@ import dictionary.work.DAO.Dictionary;
  */
 
 public class AddCommand implements Command {
-    private Dictionary storage;
-    private String key;
-    private String value;
+    private final Dictionary typeOfStorage;
+    private final String keyWord;
+    private final String valueWord;
 
     /**
      * Конструктор задает состояние объекта необходимыми параметрами для записи значения в словарь
-     * @param storage - объект хранящий тип хранения словаря
-     * @param key   - аргумент, хранящий ключ - слово, который необходимо добавить
-     * @param value - аргумент, хранящий слово - значение, который необходимо добавить
+     * @param typeOfStorage - объект хранящий тип хранения словаря
+     * @param keyWord   - аргумент, хранящий ключ - слово, который необходимо добавить
+     * @param valueWord - аргумент, хранящий слово - значение, который необходимо добавить
      */
-    public AddCommand(Dictionary storage, String key, String value) {
-        this.storage = storage;
-        this.key = key;
-        this.value = value;
+    public AddCommand(Dictionary typeOfStorage, String keyWord, String valueWord) {
+        this.typeOfStorage = typeOfStorage;
+        this.keyWord = keyWord;
+        this.valueWord = valueWord;
     }
 
     /**
@@ -28,6 +28,6 @@ public class AddCommand implements Command {
      */
     @Override
     public void execute() {
-        storage.addElement(key, value);
+        typeOfStorage.addElement(keyWord, valueWord);
     }
 }
