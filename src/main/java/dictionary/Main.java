@@ -1,7 +1,5 @@
 package dictionary;
 
-import dictionary.work.console.CheckWord;
-import dictionary.work.console.InterfaceCheckWord;
 import dictionary.work.console.View;
 import dictionary.work.console.commands.Invoker;
 
@@ -18,9 +16,8 @@ public class Main {
      * @param args Параметры командной строки
      */
     public static void main(String[] args) {
-        InterfaceCheckWord checkWord = new CheckWord();
         Invoker invoker = new Invoker(createDictionary(args));
-        View view = new View(checkWord, createDictionary(args), invoker);
+        View view = new View(invoker);
         view.startApp();
     }
 }

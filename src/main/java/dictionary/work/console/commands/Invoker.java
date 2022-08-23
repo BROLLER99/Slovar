@@ -2,11 +2,17 @@ package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Dictionary;
 
+import java.io.Console;
+import java.util.Scanner;
+
+import static dictionary.work.console.View.getPattern;
+
 /**
  * Класс для вызова команд словаря
  */
 public class Invoker {
     private Dictionary storage;
+    private Scanner scanner;
 
     /**
      * Конструктор задает состояние объекта invoker
@@ -19,32 +25,25 @@ public class Invoker {
 
     /**
      * Метод обращается к команде AddCommand для выполнения запроса addElement
-     *
-     * @param key   - аргумент, хранящий ключ - слово, который необходимо добавить
-     * @param value - аргумент, хранящий слово - значение, который необходимо добавить
      */
-    public void addElement(String key, String value) {
-        Command addCommand = new AddCommand(storage, key, value);
+    public void addElement() {
+        Command addCommand = new AddCommand(storage, checkWordCycle(), inputWord());
         addCommand.execute();
     }
 
     /**
      * Метод обращается к команде DeleteCommand для выполнения запроса deleteElement
-     *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо добавить
      */
-    public void deleteElement(String key) {
-        Command deleteCommand = new DeleteCommand(storage, key);
+    public void deleteElement() {
+        Command deleteCommand = new DeleteCommand(storage, checkWordCycle());
         deleteCommand.execute();
     }
 
     /**
      * Метод обращается к команде SearchCommand для выполнения запроса searchElement
-     *
-     * @param key - аргумент, хранящий ключ - слово, который необходимо добавить
      */
-    public void searchElement(String key) {
-        Command searchCommand = new SearchCommand(storage, key);
+    public void searchElement() {
+        Command searchCommand = new SearchCommand(storage, checkWordCycle());
         searchCommand.execute();
     }
 
@@ -56,13 +55,32 @@ public class Invoker {
         outputAllCommand.execute();
     }
 
-    /**
-     * Метод обращается к команде SetNumberOfDictionaryCommand для выполнения запроса setNumberOfDictionary
-     *
-     * @param numberOfDictionary - аргумент, хранящий номер словаря
-     */
-    public void setNumberOfDictionary(int numberOfDictionary) {
-        Command setNumberOfDictionaryCommand = new SetNumberOfDictionaryCommand(storage, numberOfDictionary);
-        setNumberOfDictionaryCommand.execute();
+    private String inputWord() {
+        Console console = System.console();
+        if (console == null) {
+            return getScanner().nextLine();
+        } else {
+            return console.readLine();
+        }
     }
+
+    private Scanner getScanner() {
+        if (scanner == null) {
+            return new Scanner(System.in);
+        } else return scanner;
+    }
+
+    private String checkWordCycle() {
+        String keyWord;
+        while (true) {
+            System.out.println("KEY_WORD");
+            keyWord = inputWord();
+            if (keyWord.matches(getPattern())) {
+                return keyWord;
+            } else {
+                System.out.println("BAD_WORD");
+            }
+        }
+    }
+
 }

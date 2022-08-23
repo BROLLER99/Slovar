@@ -31,11 +31,4 @@ public interface Dictionary {
      * Метод для вывода всех элементов
      */
     StringBuilder outputAllElements();
-
-    /**
-     * Метод установки номера выбранного словаря
-     *
-     * @param numberOfDictionary - аргумент, хранящий номер словаря
-     */
-    void setNumberOfDictionary(int numberOfDictionary);
 }

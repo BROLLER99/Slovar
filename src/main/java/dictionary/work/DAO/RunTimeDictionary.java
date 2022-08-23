@@ -95,8 +95,4 @@ public class RunTimeDictionary implements Dictionary {
         }
     }
 
-    @Override
-    public void setNumberOfDictionary(int numberOfDictionary) {
-
-    }
 }

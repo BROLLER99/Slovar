@@ -3,7 +3,6 @@ package dictionary.work.console;
 import dictionary.work.DAO.Dictionary;
 import dictionary.work.console.commands.Invoker;
 import dictionary.work.exeption.FileException;
-
 import java.io.Console;
 import java.util.Objects;
 import java.util.Scanner;
@@ -38,28 +37,24 @@ public class View {
     private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
     private static final String SECOND_PATTERN = "[0-9]{5}";
     private static final int ZERO_FOR_EXIT = 0;
-    private static final String ONE_FOR_CHOICE_IN_DICTIONARY_MENU = "1";
-    private static final String TWO_FOR_CHOICE_IN_DICTIONARY_MENU = "2";
-    private static final String THREE_FOR_CHOICE_IN_DICTIONARY_MENU = "3";
-    private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
-    private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
-    private int numberOfDictionary;
-    private InterfaceCheckWord checkWord;
+    private static final String NUMBER_FOR_OUTPUT_ALL_ELEMENTS = "1";
+    private static final String NUMBER_FOR_ADD_ELEMENT = "2";
+    private static final String NUMBER_FOR_DELETE_ELEMENT = "3";
+    private static final String NUMBER_FOR_SEARCH_ELEMENT = "4";
+    private static final String NUMBER_FOR_EXIT = "5";
+
+    private static int numberOfDictionary;
     private Dictionary storage;
     private Invoker invoker;
-
-    private String pattern;
+    private static String pattern;
     private Scanner scanner;
 
     /**
      * Конструктор задает состояние объекта view необходимыми параметрами
-     * @param checkWord - объект проверяющий вводимое слово
-     * @param storage - объект хранящий тип хранения словаря
-     * @param invoker - объект для работы с запросами
+     *
+     * @param invoker   - объект для работы с запросами
      */
-    public View(InterfaceCheckWord checkWord, Dictionary storage, Invoker invoker) {
-        this.checkWord = checkWord;
-        this.storage = storage;
+    public View( Invoker invoker) {
         this.invoker = invoker;
     }
 
@@ -93,45 +88,23 @@ public class View {
                     System.out.println(FIRST_DICTIONARY_AND_TERMS);
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
-                String userChoice = inputWord();
 
-                if (Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    System.out.println(ALL_WORDS);
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.outputAllElements();
-
-                } else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keyWord = checkWordCycle();
-                    System.out.println(VALUE);
-                    String valueWord = inputWord();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.addElement(keyWord, valueWord);
-
-                    System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
-                    System.out.println();
-                } else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keyDelete = checkWordCycle();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.deleteElement(keyDelete);
-
-                    System.out.println(KEY_WORD + keyDelete + DELETE);
-                    System.out.println();
-                } else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keySearch = checkWordCycle();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.searchElement(keySearch);
-
-                    System.out.println();
-                } else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    System.out.println(EXIT_PROGRAM);
-                    System.exit(ZERO_FOR_EXIT);
-                } else {
-                    System.out.println(DOES_NOT_EXIST);
-                    System.out.println();
+                int userChoice = Integer.parseInt(inputWord());
+                Commands[] commands = Commands.values();
+                for (Commands c : commands) {
+                    if (c.getNumberOfCommand() == userChoice) {
+                        if (c.getNumberOfCommand() == 1) {
+                            invoker.outputAllElements();
+                        } else if (c.getNumberOfCommand() == 2) {
+                            invoker.addElement();
+                        } else if (c.getNumberOfCommand() == 3) {
+                            invoker.deleteElement();
+                        } else if (c.getNumberOfCommand() == 4) {
+                            invoker.searchElement();
+                        } else if (c.getNumberOfCommand() == 5) {
+                            System.exit(ZERO_FOR_EXIT);
+                        }
+                    }
                 }
             } catch (FileException e) {
                 System.out.println(e.getMessage());
@@ -139,11 +112,6 @@ public class View {
         }
     }
 
-    /**
-     * Метод запрашивает пользовательский ввод
-     *
-     * @return возвращает значение введенное пользователем
-     */
     private String inputWord() {
         Console console = System.console();
         if (console == null) {
@@ -165,20 +133,18 @@ public class View {
     }
 
     /**
-     * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
-     *
-     * @return возвращает значение правильно введенного слова
+     * Метод геттер возвращает номер выбранного словаря
+     * @return numberOfDictionary - номер выбранного словаря
      */
-    private String checkWordCycle() {
-        String keyWord;
-        while (true) {
-            System.out.println(KEY_WORD);
-            keyWord = inputWord();
-            if (checkWord.check(pattern, keyWord)) {
-                return keyWord;
-            } else {
-                System.out.println(BAD_WORD);
-            }
-        }
+    public static int getNumberOfDictionary() {
+        return numberOfDictionary;
+    }
+
+    /**
+     * геттер возвращает паттерн выбранного словаря
+     * @return pattern - паттерн выбранного словаря
+     */
+    public static String getPattern() {
+        return pattern;
     }
 }

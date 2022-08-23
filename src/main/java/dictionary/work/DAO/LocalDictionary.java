@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static dictionary.work.console.View.getNumberOfDictionary;
+
 
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
@@ -25,7 +27,6 @@ public class LocalDictionary implements Dictionary {
     private static final int ONE_FOR_SPLIT = 1;
     private static final int ZERO_FOR_SPLIT = 0;
     private static final String KEY_VALUE_SEPARATOR = ":";
-    private static int numberOfDictionary;
     private String nameFile;
 
     /**
@@ -38,9 +39,8 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public void addElement(String key, String value) {
-        nameOfFile(numberOfDictionary);
         try {
-            File file = new File(nameFile);
+            File file = new File(nameOfFile());
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -51,16 +51,6 @@ public class LocalDictionary implements Dictionary {
             throw new FileException(ADD_EXCEPTION);
         }
     }
-
-    /**
-     * Метод получения номера словаря выбранного пользователем
-     *
-     * @param numberOfDictionary - номер словаря
-     */
-    public void setNumberOfDictionary(int numberOfDictionary) {
-        this.numberOfDictionary = numberOfDictionary;
-    }
-
     /**
      * Реализация метода вывода всех записей из файла, интерфейса InterfaceDictionary
      *
@@ -70,8 +60,7 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public StringBuilder outputAllElements() {
-        nameOfFile(numberOfDictionary);
-        File file = new File(nameFile);
+        File file = new File(nameOfFile());
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             StringBuilder stringBuilder = new StringBuilder();
             String line;
@@ -100,8 +89,7 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public boolean searchElement(String key) {
-        nameOfFile(numberOfDictionary);
-        File file = new File(nameFile);
+        File file = new File(nameOfFile());
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -130,8 +118,7 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public void deleteElement(String key) {
-        nameOfFile(numberOfDictionary);
-        File file = new File(nameFile);
+        File file = new File(nameOfFile());
         File tmpFile = new File(TMP_FILE + nameFile);
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tmpFile));
@@ -162,11 +149,11 @@ public class LocalDictionary implements Dictionary {
     /**
      * Метод определения имени файла словаря по номеру словаря
      *
-     * @param numberOfDictionary - номер словаря
+    // * @param numberOfDictionary - номер словаря
      * @return возвращает имя файла
      */
-    private String nameOfFile(int numberOfDictionary) {
-        if (numberOfDictionary == ONE_FOR_NUMBER_OF_DICTIONARY) {
+    private String nameOfFile() {
+        if (getNumberOfDictionary() == ONE_FOR_NUMBER_OF_DICTIONARY) {
             return nameFile = WORDS_FILE;
         } else return nameFile = NUMBERS_FILE;
     }
