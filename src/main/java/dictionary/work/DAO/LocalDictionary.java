@@ -16,17 +16,12 @@ import static dictionary.work.console.View.getNumberOfDictionary;
  * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
  */
 public class LocalDictionary implements Dictionary {
-    private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
-    private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";
-    private static final String SEARCH_EXCEPTION = "Ошибка поиска элемента";
-    private static final String OUTPUT_ALL_EXCEPTION = "Ошибка вывода всех элементов";
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";
-    private static final String TMP_FILE="tmp";
+    private static final String TMP_FILE = "tmp";
     private static final int ONE_FOR_NUMBER_OF_DICTIONARY = 1;
     private static final int ONE_FOR_SPLIT = 1;
     private static final int ZERO_FOR_SPLIT = 0;
-    private static final String KEY_VALUE_SEPARATOR = ":";
     private String nameFile;
 
     /**
@@ -51,6 +46,7 @@ public class LocalDictionary implements Dictionary {
             throw new FileException(ADD_EXCEPTION);
         }
     }
+
     /**
      * Реализация метода вывода всех записей из файла, интерфейса InterfaceDictionary
      *
@@ -148,8 +144,9 @@ public class LocalDictionary implements Dictionary {
 
     /**
      * Метод определения имени файла словаря по номеру словаря
+     * <p>
+     * // * @param numberOfDictionary - номер словаря
      *
-    // * @param numberOfDictionary - номер словаря
      * @return возвращает имя файла
      */
     private String nameOfFile() {

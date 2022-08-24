@@ -9,11 +9,6 @@ import java.util.Map;
  * Класс реализует методы интерфейса InterfaceDictionary по работе с map
  */
 public class RunTimeDictionary implements Dictionary {
-    private static final String KEY_VALUE_SEPARATOR = ":";
-    private static final String ADD_EXCEPTION = "Ошибка добавления элемента";
-    private static final String DELETE_EXCEPTION = "Ошибка удаления элемента";
-    private static final String SEARCH_EXCEPTION = "Ошибка поиска элемента";
-    private static final String OUTPUT_ALL_EXCEPTION = "Ошибка вывода всех элементов";
     /**
      * Объект dictionary который будет хранить коллекцию Map
      */

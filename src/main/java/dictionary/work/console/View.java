@@ -50,7 +50,7 @@ public class View {
     public void startApp() {
         while (true) {
             System.out.println(MAIN_MENU);
-            String userChoice = invoker.inputWords();
+            String userChoice = invoker.getInputWord();
 
             if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
                 pattern = FIRST_PATTERN;
@@ -75,7 +75,7 @@ public class View {
                 } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
                 System.out.println(DICTIONARY_MENU);
 
-                int userChoice = Integer.parseInt(invoker.inputWords());
+                int userChoice = Integer.parseInt(invoker.getInputWord());
                 Commands[] commands = Commands.values();
                 for (Commands c : commands) {
                     if (c.getNumberOfCommand() == userChoice) {

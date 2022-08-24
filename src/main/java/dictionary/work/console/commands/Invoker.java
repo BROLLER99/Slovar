@@ -58,10 +58,11 @@ public class Invoker {
     }
 
     /**
-     * Метод
-     * @return
+     * Метод получения введенного слова
+     *
+     * @return возвращает метод для введения слова
      */
-    public String inputWords(){
+    public String getInputWord() {
         return inputWord();
     }
 
