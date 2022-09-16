@@ -4,25 +4,15 @@ package dictionary.work.console;
  * Перечисление команд для работы со словарем
  */
 public enum Commands {
-    OutputAll(1), Add(2), Delete(3), Search(4), Exit(5);
-    private final int numberOfCommand;
-    /**
-     * Конструктор задает состояние объекта commands
-     *
-     * @param numberOfCommand - вызываемой команды номер команды
-     */
-    Commands(int numberOfCommand) {
-        this.numberOfCommand = numberOfCommand;
-    }
-
+    outputAllElements, addElement, deleteElement, searchElement, exit;
+    private final static int ONE_TO_START_SERIAL_NUMBER_FROM_ONE = 1;
     /**
      * Метод геттер возвращает номер выбранной команды
      *
      * @return number - номер выбранной команды
      */
-    public int getNumberOfCommand() {
-        return numberOfCommand;
+    public int getSerialNumberOfCommand() {
+        return ordinal()+ONE_TO_START_SERIAL_NUMBER_FROM_ONE;
     }
-
 }
 

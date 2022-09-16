@@ -2,12 +2,8 @@ package dictionary.work.DAO;
 
 import dictionary.work.exeption.FileException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.DirectoryNotEmptyException;
 
 import static dictionary.work.console.View.getNumberOfDictionary;
 
@@ -16,6 +12,7 @@ import static dictionary.work.console.View.getNumberOfDictionary;
  * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
  */
 public class LocalDictionary implements Dictionary {
+    private static final String CREATE_FILE_EXCEPTION = "Ошибка создания файла";
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";
     private static final String TMP_FILE = "tmp";
@@ -35,11 +32,7 @@ public class LocalDictionary implements Dictionary {
     @Override
     public void addElement(String key, String value) {
         try {
-            File file = new File(nameOfFile());
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileWriter fileWriter = new FileWriter(file, true);
+            FileWriter fileWriter = new FileWriter(createFile(), true);
             fileWriter.write(key + KEY_VALUE_SEPARATOR + value + "\n");
             fileWriter.close();
         } catch (SecurityException | IOException e) {
@@ -56,8 +49,7 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public StringBuilder outputAllElements() {
-        File file = new File(nameOfFile());
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(createFile()))) {
             StringBuilder stringBuilder = new StringBuilder();
             String line;
             while ((line = bufferedReader.readLine()) != null) {
@@ -65,11 +57,12 @@ public class LocalDictionary implements Dictionary {
                 String[] parts = line.split(KEY_VALUE_SEPARATOR);
 
                 String name = parts[ZERO_FOR_SPLIT].trim();
-                String value = parts[ONE_FOR_SPLIT].trim();
 
+                String value = parts[ONE_FOR_SPLIT].trim();
                 if (!name.equals("") && !value.equals(""))
                     stringBuilder.append(name).append(KEY_VALUE_SEPARATOR).append(value).append("\n");
             }
+            bufferedReader.close();
             return stringBuilder;
         } catch (NullPointerException | IOException e) {
             throw new FileException(OUTPUT_ALL_EXCEPTION);
@@ -85,19 +78,15 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public boolean searchElement(String key) {
-        File file = new File(nameOfFile());
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(createFile()))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
 
-                String[] parts = line.split(KEY_VALUE_SEPARATOR);
-
-                String name = parts[ZERO_FOR_SPLIT].trim();
-
-                if (name.equals(key)) {
+                if (splitAndPartsString(line).equals(key)) {
                     return true;
                 }
             }
+            bufferedReader.close();
             return false;
         } catch (IOException e) {
             throw new FileException(SEARCH_EXCEPTION);
@@ -114,23 +103,17 @@ public class LocalDictionary implements Dictionary {
      */
     @Override
     public void deleteElement(String key) {
-        File file = new File(nameOfFile());
         File tmpFile = new File(TMP_FILE + nameFile);
         try {
+            File file = createFile();
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tmpFile));
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-
-                String[] parts = line.split(KEY_VALUE_SEPARATOR);
-
-                String name = parts[ZERO_FOR_SPLIT].trim();
-
-                if (!name.equals(key)) {
+                if (!splitAndPartsString(line).equals(key)) {
                     bufferedWriter.write(line);
                     bufferedWriter.newLine();
                 }
-
             }
             bufferedWriter.close();
             bufferedReader.close();
@@ -142,16 +125,23 @@ public class LocalDictionary implements Dictionary {
         }
     }
 
-    /**
-     * Метод определения имени файла словаря по номеру словаря
-     * <p>
-     * // * @param numberOfDictionary - номер словаря
-     *
-     * @return возвращает имя файла
-     */
     private String nameOfFile() {
         if (getNumberOfDictionary() == ONE_FOR_NUMBER_OF_DICTIONARY) {
             return nameFile = WORDS_FILE;
         } else return nameFile = NUMBERS_FILE;
+    }
+
+    private File createFile() throws IOException {
+        File file = new File(nameOfFile());
+        if (!file.exists() && !file.createNewFile()) {
+            throw new FileException(CREATE_FILE_EXCEPTION);
+        }
+        return file;
+    }
+
+    private String splitAndPartsString(String line) {
+        String[] parts = line.split(KEY_VALUE_SEPARATOR);
+        String name = parts[ZERO_FOR_SPLIT].trim();
+        return name;
     }
 }

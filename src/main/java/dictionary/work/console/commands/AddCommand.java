@@ -6,7 +6,7 @@ import dictionary.work.DAO.Dictionary;
  * Класс реализует метод интерфейса Command добавлением записи в словарь
  */
 
-public class AddCommand implements Command {
+public class AddCommand<T> implements Command<String> {
     private final Dictionary typeOfStorage;
     private final String keyWord;
     private final String valueWord;
@@ -27,7 +27,8 @@ public class AddCommand implements Command {
      * Реализация метода выполнения команды(добавление записи в словарь) интерфейса Command
      */
     @Override
-    public void execute() {
+    public String execute() {
         typeOfStorage.addElement(keyWord, valueWord);
+        return COMPLETE;
     }
 }

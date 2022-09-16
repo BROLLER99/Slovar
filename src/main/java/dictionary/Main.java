@@ -1,5 +1,7 @@
 package dictionary;
 
+import dictionary.work.config.StorageConfig;
+import dictionary.work.console.Commands;
 import dictionary.work.console.View;
 import dictionary.work.console.commands.Invoker;
 
@@ -17,7 +19,8 @@ public class Main {
      */
     public static void main(String[] args) {
         Invoker invoker = new Invoker(createDictionary(args));
-        View view = new View(invoker);
+        StorageConfig storageConfig = new StorageConfig();
+        View view = new View(invoker, storageConfig);
         view.startApp();
     }
 }

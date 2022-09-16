@@ -2,9 +2,8 @@ package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Dictionary;
 
-import java.io.Console;
-import java.util.Scanner;
 
+import static dictionary.work.console.View.getInputWord;
 import static dictionary.work.console.View.getPattern;
 
 /**
@@ -12,9 +11,9 @@ import static dictionary.work.console.View.getPattern;
  */
 public class Invoker {
     private final Dictionary typeOfStorage;
-    private Scanner scanner;
     private static final String KEY_WORD = "Ключ слово:";
     private static final String BAD_WORD = "Неправильно ввели слово";
+    private static final int ZERO_FOR_EXIT = 0;
 
     /**
      * Конструктор задает состояние объекта invoker
@@ -27,65 +26,52 @@ public class Invoker {
 
     /**
      * Метод обращается к команде AddCommand для выполнения запроса addElement
+     * @return
      */
-    public void addElement() {
-        Command addCommand = new AddCommand(typeOfStorage, checkWordCycle(), inputWord());
-        addCommand.execute();
+    public String addElement() {
+        Command addCommand = new AddCommand(typeOfStorage, checkWordCycle(), getInputWord());
+        return (String) addCommand.execute();
     }
 
     /**
      * Метод обращается к команде DeleteCommand для выполнения запроса deleteElement
+     *
+     * @return
      */
-    public void deleteElement() {
+    public String deleteElement() {
         Command deleteCommand = new DeleteCommand(typeOfStorage, checkWordCycle());
-        deleteCommand.execute();
+        return (String) deleteCommand.execute();
     }
 
     /**
      * Метод обращается к команде SearchCommand для выполнения запроса searchElement
+     * @return
      */
-    public void searchElement() {
-        Command searchCommand = new SearchCommand(typeOfStorage, checkWordCycle());
-        searchCommand.execute();
+    public String searchElement() {
+        Command<String> searchCommand = new SearchCommand(typeOfStorage, checkWordCycle());
+        return searchCommand.execute();
     }
 
     /**
      * Метод обращается к команде OutputAllCommand для выполнения запроса outputAllElements
+     * @return
      */
-    public void outputAllElements() {
-        Command outputAllCommand = new OutputAllCommand(typeOfStorage);
-        outputAllCommand.execute();
+    public StringBuilder outputAllElements() {
+        Command<StringBuilder> outputAllCommand = new OutputAllCommand(typeOfStorage);
+        return outputAllCommand.execute();
     }
-
     /**
-     * Метод получения введенного слова
-     *
-     * @return возвращает метод для введения слова
+     * Метод выхода из программы
      */
-    public String getInputWord() {
-        return inputWord();
-    }
-
-    private String inputWord() {
-        Console console = System.console();
-        if (console == null) {
-            return getScanner().nextLine();
-        } else {
-            return console.readLine();
-        }
-    }
-
-    private Scanner getScanner() {
-        if (scanner == null) {
-            return new Scanner(System.in);
-        } else return scanner;
+    public void exit() {
+        System.exit(ZERO_FOR_EXIT);
     }
 
     private String checkWordCycle() {
         String keyWord;
         while (true) {
             System.out.println(KEY_WORD);
-            keyWord = inputWord();
+            keyWord = getInputWord();
             if (keyWord.matches(getPattern())) {
                 return keyWord;
             } else {

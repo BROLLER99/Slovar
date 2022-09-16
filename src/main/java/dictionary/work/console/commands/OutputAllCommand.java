@@ -4,7 +4,7 @@ import dictionary.work.DAO.Dictionary;
 /**
  * Класс реализует метод интерфейса Command выводом всех записей из словаря
  */
-public class OutputAllCommand implements Command{
+public class OutputAllCommand implements Command<StringBuilder>{
     private final Dictionary typeOfStorage;
 
     /**
@@ -18,7 +18,7 @@ public class OutputAllCommand implements Command{
      * Реализация метода выполнения команды(вывод всех записей) интерфейса Command
      */
     @Override
-    public void execute() {
-        System.out.println(typeOfStorage.outputAllElements());
+    public StringBuilder execute() {
+        return typeOfStorage.outputAllElements();
     }
 }

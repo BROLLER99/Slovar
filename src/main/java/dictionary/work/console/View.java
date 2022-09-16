@@ -1,8 +1,14 @@
 package dictionary.work.console;
 
+import dictionary.work.config.StorageConfig;
 import dictionary.work.console.commands.Invoker;
 import dictionary.work.exeption.FileException;
-import java.util.Objects;
+
+import java.io.Console;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Scanner;
 
 
 /**
@@ -13,87 +19,53 @@ public class View {
 
     private static final String MAIN_MENU = "Выберете действие: \n1 - Словарь №1 \n2 - Словарь №2 \n0 - Выход из программы";
     private static final String DICTIONARY_MENU = "Выберете действие: \n1 - Просмотр всех пар слов \n2 - Добавить элемент \n3 - Удалить элемент \n4 - Поиск по ключу \n5 - Выйти из программы";
-    private static final String FIRST_DICTIONARY_AND_TERMS = "Выбран словарь № 1. \nВ данном словаре длинна слов может быть только 4 символа и эти символы только буквы латинской раскладки";
-    private static final String SECOND_DICTIONARY_AND_TERMS = "Выбран словарь № 2. \nВ данном словаре длина слов может быть только 5 символа и эти символы только цифры.";
-    private static final String EXIT_PROGRAM = "Выход из программы. ";
-    private static final String DOES_NOT_EXIST = "Такого пункта меню не существует! ";
-    private static final String ONE_FOR_USER_CHOICE_IN_MAIN_MENU = "1";
-    private static final String TWO_FOR_USER_CHOICE_IN_MAIN_MENU = "2";
-    private static final String ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = "0";
-    private static final int FIRST_NUMBER_OF_DICTIONARY = 1;
-    private static final int SECOND_NUMBER_OF_DICTIONARY = 2;
-    private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
-    private static final String SECOND_PATTERN = "[0-9]{5}";
-    private static final int ZERO_FOR_EXIT = 0;
-    private static final int NUMBER_FOR_OUTPUT_ALL_ELEMENTS = 1;
-    private static final int NUMBER_FOR_ADD_ELEMENT = 2;
-    private static final int NUMBER_FOR_DELETE_ELEMENT = 3;
-    private static final int NUMBER_FOR_SEARCH_ELEMENT = 4;
-    private static final int NUMBER_FOR_EXIT = 5;
-
+    private static final String MENU_EXCEPTION = "Выбран не существующий пункт!";
     private static int numberOfDictionary;
     private final Invoker invoker;
+    private final StorageConfig storageConfig;
     private static String pattern;
+    static Scanner scanner;
 
     /**
      * Конструктор задает состояние объекта view необходимыми параметрами
      *
      * @param invoker - объект для работы с запросами
      */
-    public View(Invoker invoker) {
+    public View(Invoker invoker, StorageConfig storageConfig) {
         this.invoker = invoker;
+        this.storageConfig = storageConfig;
     }
 
     /**
      * Метод обеспечивает ввод-вывод в консоль запросов для работы со словарем
      */
     public void startApp() {
-        while (true) {
-            System.out.println(MAIN_MENU);
-            String userChoice = invoker.getInputWord();
-
-            if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = FIRST_PATTERN;
-                numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
-                break;
-            } else if (Objects.equals(userChoice, TWO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = SECOND_PATTERN;
-                numberOfDictionary = SECOND_NUMBER_OF_DICTIONARY;
-                break;
-            } else if (Objects.equals(userChoice, ZERO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                System.out.println(EXIT_PROGRAM);
-                System.exit(ZERO_FOR_EXIT);
-                break;
-            } else
-                System.out.println(DOES_NOT_EXIST);
-            System.out.println();
+        {
+            try {
+                System.out.println(MAIN_MENU);
+                String userChoice = getInputWord();
+                pattern = storageConfig.getMapEntry(userChoice).getPattern();
+                numberOfDictionary = Integer.parseInt(userChoice);
+            } catch (NullPointerException e) {
+                throw new FileException(MENU_EXCEPTION);
+            }
         }
         while (true) {
             try {
-                if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
-                    System.out.println(FIRST_DICTIONARY_AND_TERMS);
-                } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
+                System.out.println(storageConfig.getMapEntry(numberOfDictionary + "").getDescription());
                 System.out.println(DICTIONARY_MENU);
 
-                int userChoice = Integer.parseInt(invoker.getInputWord());
-                Commands[] commands = Commands.values();
-                for (Commands c : commands) {
-                    if (c.getNumberOfCommand() == userChoice) {
-                        if (c.getNumberOfCommand() == NUMBER_FOR_OUTPUT_ALL_ELEMENTS) {
-                            invoker.outputAllElements();
-                        } else if (c.getNumberOfCommand() == NUMBER_FOR_ADD_ELEMENT) {
-                            invoker.addElement();
-                        } else if (c.getNumberOfCommand() == NUMBER_FOR_DELETE_ELEMENT) {
-                            invoker.deleteElement();
-                        } else if (c.getNumberOfCommand() == NUMBER_FOR_SEARCH_ELEMENT) {
-                            invoker.searchElement();
-                        } else if (c.getNumberOfCommand() == NUMBER_FOR_EXIT) {
-                            System.exit(ZERO_FOR_EXIT);
-                        }
+                int userChoice = Integer.parseInt(getInputWord());
+
+                for (Commands c : Commands.values()) {
+                    if (c.getSerialNumberOfCommand() == userChoice) {
+                        Method method = invoker.getClass().getMethod(c.name());
+                        System.out.println(method.invoke(invoker));
+                        break;
                     }
                 }
-            } catch (FileException e) {
-                System.out.println(e.getMessage());
+            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+                throw new FileException(MENU_EXCEPTION);
             }
         }
     }
@@ -114,5 +86,29 @@ public class View {
      */
     public static String getPattern() {
         return pattern;
+    }
+
+    private static Scanner getScanner() {
+        if (scanner == null) {
+            return new Scanner(System.in);
+        } else return scanner;
+    }
+
+    /**
+     * Метод получения введенного слова
+     *
+     * @return возвращает метод для введения слова
+     */
+    public static String getInputWord() {
+        return inputWord();
+    }
+
+    private static String inputWord() {
+        Console console = System.console();
+        if (console == null) {
+            return getScanner().nextLine();
+        } else {
+            return console.readLine();
+        }
     }
 }

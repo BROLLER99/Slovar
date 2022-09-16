@@ -1,10 +1,12 @@
 package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Dictionary;
+import org.w3c.dom.NodeList;
+
 /**
  * Класс реализует метод интерфейса Command поиском записи из словаря
  */
-public class SearchCommand implements Command {
+public class SearchCommand implements Command<String> {
     private final Dictionary typeOfStorage;
     private final String keyWord;
     private static final String YES_ELEMENT = "Такой элемент есть";
@@ -24,12 +26,11 @@ public class SearchCommand implements Command {
      * Реализация метода выполнения команды(поиск записи) интерфейса Command
      */
     @Override
-    public void execute() {
-        if(typeOfStorage.searchElement(keyWord)){
-            System.out.println(YES_ELEMENT);
-        }
-        else {
-            System.out.println(NO_ELEMENT);
+    public String execute() {
+        if (typeOfStorage.searchElement(keyWord)) {
+            return YES_ELEMENT;
+        } else {
+            return NO_ELEMENT;
         }
     }
 }
