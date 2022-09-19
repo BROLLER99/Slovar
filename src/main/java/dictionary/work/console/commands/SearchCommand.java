@@ -1,7 +1,6 @@
 package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Dictionary;
-import org.w3c.dom.NodeList;
 
 /**
  * Класс реализует метод интерфейса Command поиском записи из словаря
@@ -14,14 +13,16 @@ public class SearchCommand implements Command<String> {
 
     /**
      * Конструктор задает состояние объекта необходимыми параметрами поиска записи в словаре
+     *
      * @param typeOfStorage - объект хранящий тип хранения словаря
-     * @param keyWord   - аргумент, хранящий ключ - слово, который необходимо удалить
+     * @param keyWord       - аргумент, хранящий ключ - слово, который необходимо удалить
      */
     public SearchCommand(Dictionary typeOfStorage, String keyWord) {
         this.typeOfStorage = typeOfStorage;
         this.keyWord = keyWord;
 
     }
+
     /**
      * Реализация метода выполнения команды(поиск записи) интерфейса Command
      */

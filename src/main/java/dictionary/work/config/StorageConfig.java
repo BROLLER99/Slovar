@@ -14,13 +14,11 @@ public class StorageConfig {
     private static final String SECOND_DICTIONARY_AND_TERMS = "Выбран словарь № 2. \nВ данном словаре длина слов может быть только 5 символа и эти символы только цифры.";
 
     Map<String, DictionaryType> map;
-
     public StorageConfig() {
         map = new HashMap<>();
         map.put(FIRST_NUMBER_OF_DICTIONARY, new DictionaryType(FIRST_PATTERN, FIRST_DICTIONARY_AND_TERMS));
         map.put(SECOND_NUMBER_OF_DICTIONARY, new DictionaryType(SECOND_PATTERN, SECOND_DICTIONARY_AND_TERMS));
     }
-
     public DictionaryType getMapEntry(String s) {
         return map.get(s);
     }

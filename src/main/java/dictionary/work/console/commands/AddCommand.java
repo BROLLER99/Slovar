@@ -2,10 +2,10 @@ package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Dictionary;
 
+
 /**
  * Класс реализует метод интерфейса Command добавлением записи в словарь
  */
-
 public class AddCommand<T> implements Command<String> {
     private final Dictionary typeOfStorage;
     private final String keyWord;

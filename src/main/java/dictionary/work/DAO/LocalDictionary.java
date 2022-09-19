@@ -3,7 +3,6 @@ package dictionary.work.DAO;
 import dictionary.work.exeption.FileException;
 
 import java.io.*;
-import java.nio.file.DirectoryNotEmptyException;
 
 import static dictionary.work.console.View.getNumberOfDictionary;
 

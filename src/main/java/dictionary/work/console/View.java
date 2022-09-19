@@ -1,13 +1,11 @@
 package dictionary.work.console;
 
 import dictionary.work.config.StorageConfig;
+import dictionary.work.console.commands.FactoryOfCommands;
 import dictionary.work.console.commands.Invoker;
 import dictionary.work.exeption.FileException;
 
 import java.io.Console;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Scanner;
 
 
@@ -23,6 +21,7 @@ public class View {
     private static int numberOfDictionary;
     private final Invoker invoker;
     private final StorageConfig storageConfig;
+    private final FactoryOfCommands factoryOfCommands;
     private static String pattern;
     static Scanner scanner;
 
@@ -31,9 +30,10 @@ public class View {
      *
      * @param invoker - объект для работы с запросами
      */
-    public View(Invoker invoker, StorageConfig storageConfig) {
+    public View(Invoker invoker, StorageConfig storageConfig, FactoryOfCommands factoryOfCommands) {
         this.invoker = invoker;
         this.storageConfig = storageConfig;
+        this.factoryOfCommands = factoryOfCommands;
     }
 
     /**
@@ -51,21 +51,15 @@ public class View {
             }
         }
         while (true) {
-            try {
-                System.out.println(storageConfig.getMapEntry(numberOfDictionary + "").getDescription());
-                System.out.println(DICTIONARY_MENU);
+            System.out.println(storageConfig.getMapEntry(numberOfDictionary + "").getDescription());
+            System.out.println(DICTIONARY_MENU);
 
-                int userChoice = Integer.parseInt(getInputWord());
-
-                for (Commands c : Commands.values()) {
-                    if (c.getSerialNumberOfCommand() == userChoice) {
-                        Method method = invoker.getClass().getMethod(c.name());
-                        System.out.println(method.invoke(invoker));
-                        break;
-                    }
+            int userChoice = Integer.parseInt(getInputWord());
+            for (Commands c : Commands.values()) {
+                if (c.getSerialNumberOfCommand() == userChoice) {
+                    System.out.println(invoker.executeCommand(factoryOfCommands.nameOfCommand(c)));
+                    break;
                 }
-            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-                throw new FileException(MENU_EXCEPTION);
             }
         }
     }
