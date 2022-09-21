@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с map
  */
-public class RunTimeDictionary implements Dictionary {
+public class RunTimeStorage implements Storage {
     /**
      * Объект dictionary который будет хранить коллекцию Map
      */

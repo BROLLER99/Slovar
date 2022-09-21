@@ -10,7 +10,7 @@ import static dictionary.work.console.View.getNumberOfDictionary;
 /**
  * Класс реализует методы интерфейса InterfaceDictionary по работе с файлом
  */
-public class LocalDictionary implements Dictionary {
+public class LocalStorage implements Storage {
     private static final String CREATE_FILE_EXCEPTION = "Ошибка создания файла";
     private static final String WORDS_FILE = "words.txt";
     private static final String NUMBERS_FILE = "chisla.txt";

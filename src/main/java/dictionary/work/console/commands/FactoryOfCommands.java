@@ -1,48 +1,48 @@
 package dictionary.work.console.commands;
 
-import dictionary.work.DAO.Dictionary;
+import dictionary.work.DAO.Storage;
 import dictionary.work.console.Commands;
-
-import java.util.Objects;
+import dictionary.work.exeption.FileException;
 
 import static dictionary.work.console.View.getInputWord;
 import static dictionary.work.console.View.getPattern;
 
+/**
+ * Класс предназначен для создания и определения объекта выбранной команды
+ */
 public class FactoryOfCommands {
-    private static final String KEY_WORD = "Ключ слово:";
-    private static final String BAD_WORD = "Неправильно ввели слово";
-    private static final int ZERO_FOR_EXIT = 0;
-    Dictionary typeOfStorage;
+    private final static String COMMAND_EXCEPTION = "Выбран неверный пункт";
+    Storage typeOfStorage;
 
-    public FactoryOfCommands(Dictionary typeOfStorage) {
+    /**
+     * Конструктор задает состояние объекта необходимыми параметрами для определения объекта команды
+     *
+     * @param typeOfStorage - объект хранящий тип хранения словаря
+     */
+    public FactoryOfCommands(Storage typeOfStorage) {
         this.typeOfStorage = typeOfStorage;
     }
 
-    public Command nameOfCommand(Commands nameCommand) {
-        if(Objects.equals(nameCommand.toString(), "AddElement")){
-            return new AddCommand(typeOfStorage, checkWordCycle(), getInputWord());
-        } else if (Objects.equals(nameCommand.toString(), "OutputAllElements")) {
-            return new OutputAllCommand(typeOfStorage);
-        }else if(Objects.equals(nameCommand.toString(), "DeleteElement")){
-            return new DeleteCommand(typeOfStorage, checkWordCycle());
-        }else if(Objects.equals(nameCommand.toString(), "SearchElement")){
-            return new SearchCommand(typeOfStorage, checkWordCycle());
-        }
-//        else if(nameCommand.toString() == "Exit"){
-//            return System.exit(ZERO_FOR_EXIT);
-//        }
-    return null;
-    }
-    private String checkWordCycle() {
-        String keyWord;
-        while (true) {
-            System.out.println(KEY_WORD);
-            keyWord = getInputWord();
-            if (keyWord.matches(getPattern())) {
-                return keyWord;
-            } else {
-                System.out.println(BAD_WORD);
-            }
+    /**
+     * Метод определения объекта команды по выбранному пункту
+     *
+     * @param command - передаваемое имя команды
+     * @return возвращает новый объект команды с определенными параметрами
+     */
+    public Command<?> nameOfCommand(Commands command) {
+        switch (command) {
+            case ADD_ELEMENT:
+                return new AddCommand(typeOfStorage, getInputWord(), getInputWord(), getPattern());
+            case OUTPUT_ALL_ELEMENTS:
+                return new OutputAllCommand(typeOfStorage);
+            case DELETE_ELEMENT:
+                return new DeleteCommand(typeOfStorage, getInputWord());
+            case SEARCH_ELEMENT:
+                return new SearchCommand(typeOfStorage, getInputWord());
+            case EXIT:
+                return new ExitCommand();
+            default:
+                throw new FileException(COMMAND_EXCEPTION);
         }
     }
 }

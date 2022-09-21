@@ -1,12 +1,12 @@
 package dictionary.work.console.commands;
 
-import dictionary.work.DAO.Dictionary;
+import dictionary.work.DAO.Storage;
 
 /**
  * Класс реализует метод интерфейса Command поиском записи из словаря
  */
 public class SearchCommand implements Command<String> {
-    private final Dictionary typeOfStorage;
+    private final Storage typeOfStorage;
     private final String keyWord;
     private static final String YES_ELEMENT = "Такой элемент есть";
     private static final String NO_ELEMENT = "Такого элемента нет";
@@ -17,7 +17,7 @@ public class SearchCommand implements Command<String> {
      * @param typeOfStorage - объект хранящий тип хранения словаря
      * @param keyWord       - аргумент, хранящий ключ - слово, который необходимо удалить
      */
-    public SearchCommand(Dictionary typeOfStorage, String keyWord) {
+    public SearchCommand(Storage typeOfStorage, String keyWord) {
         this.typeOfStorage = typeOfStorage;
         this.keyWord = keyWord;
 
