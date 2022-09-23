@@ -1,11 +1,9 @@
 package dictionary.work.console.commands;
 
 import dictionary.work.DAO.Storage;
+import dictionary.work.Model.ModelOfCommand;
 import dictionary.work.console.Commands;
-import dictionary.work.exeption.FileException;
-
-import static dictionary.work.console.View.getInputWord;
-import static dictionary.work.console.View.getPattern;
+import dictionary.work.exeption.CustomException;
 
 /**
  * Класс предназначен для создания и определения объекта выбранной команды
@@ -26,23 +24,24 @@ public class FactoryOfCommands {
     /**
      * Метод определения объекта команды по выбранному пункту
      *
-     * @param command - передаваемое имя команды
+     * @param command        - передаваемое имя команды
+     * @param modelOfCommand - модель команды с параметрами для её выполнения
      * @return возвращает новый объект команды с определенными параметрами
      */
-    public Command<?> nameOfCommand(Commands command) {
+    public Command<?> nameOfCommand(Commands command, ModelOfCommand modelOfCommand) {
         switch (command) {
             case ADD_ELEMENT:
-                return new AddCommand(typeOfStorage, getInputWord(), getInputWord(), getPattern());
+                return new AddCommand(typeOfStorage, modelOfCommand.getKey(), modelOfCommand.getValue(), modelOfCommand.getPattern());
             case OUTPUT_ALL_ELEMENTS:
                 return new OutputAllCommand(typeOfStorage);
             case DELETE_ELEMENT:
-                return new DeleteCommand(typeOfStorage, getInputWord());
+                return new DeleteCommand(typeOfStorage, modelOfCommand.getKey());
             case SEARCH_ELEMENT:
-                return new SearchCommand(typeOfStorage, getInputWord());
+                return new SearchCommand(typeOfStorage, modelOfCommand.getKey());
             case EXIT:
                 return new ExitCommand();
             default:
-                throw new FileException(COMMAND_EXCEPTION);
+                throw new CustomException(COMMAND_EXCEPTION);
         }
     }
 }

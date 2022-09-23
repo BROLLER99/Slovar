@@ -1,6 +1,6 @@
 package dictionary.work.DAO;
 
-import dictionary.work.exeption.FileException;
+import dictionary.work.exeption.CustomException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +19,10 @@ public class RunTimeStorage implements Storage {
      *
      * @param key   - аргумент, хранящий ключ - слово, который необходимо добавить
      * @param value - аргумент, хранящий слово - значение, который необходимо добавить
-     * @throws FileException if the put operation is not supported by this map(UnsupportedOperationException)
-     *                       if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
-     *                       if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
+     * @throws CustomException if the put operation is not supported by this map(UnsupportedOperationException)
+     *                         if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
+     *                         if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     *                         if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
      */
     @Override
     public void addElement(String key, String value) {
@@ -30,7 +30,7 @@ public class RunTimeStorage implements Storage {
             dictionary.put(key, value);
         } catch (IllegalArgumentException | NullPointerException | ClassCastException |
                  UnsupportedOperationException e) {
-            throw new FileException(ADD_EXCEPTION);
+            throw new CustomException(ADD_EXCEPTION);
         }
     }
 
@@ -38,16 +38,16 @@ public class RunTimeStorage implements Storage {
      * Реализация метода удаления записи из map, интерфейса InterfaceDictionary
      *
      * @param key - аргумент, хранящий ключ - слово, который необходимо удалить
-     * @throws FileException if the put operation is not supported by this map(UnsupportedOperationException)
-     *                       if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     * @throws CustomException if the put operation is not supported by this map(UnsupportedOperationException)
+     *                         if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
+     *                         if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
      */
     @Override
     public void deleteElement(String key) {
         try {
             dictionary.remove(key);
         } catch (NullPointerException | ClassCastException | UnsupportedOperationException e) {
-            throw new FileException(DELETE_EXCEPTION);
+            throw new CustomException(DELETE_EXCEPTION);
         }
     }
 
@@ -56,15 +56,15 @@ public class RunTimeStorage implements Storage {
      *
      * @param key - аргумент, хранящий ключ - слово, который необходимо найти
      * @return true если элемент найден и false если нет
-     * @throws FileException if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
-     *                       if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     * @throws CustomException if the class of the specified key or value prevents it from being stored in this map(ClassCastException)
+     *                         if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
      */
     @Override
     public boolean searchElement(String key) {
         try {
             return dictionary.containsKey(key);
         } catch (ClassCastException | NullPointerException e) {
-            throw new FileException(SEARCH_EXCEPTION);
+            throw new CustomException(SEARCH_EXCEPTION);
         }
     }
 
@@ -72,8 +72,8 @@ public class RunTimeStorage implements Storage {
      * Реализация метода вывода всех записей из map, интерфейса InterfaceDictionary
      *
      * @return возвращает строку в которой содержаться все элементы
-     * @throws FileException if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
-     *                       if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
+     * @throws CustomException if the specified key or value is null and this map does not permit null keys or values(NullPointerException)
+     *                         if some property of the specified key or value prevents it from being stored in this map(IllegalArgumentException)
      */
     @Override
     public StringBuilder outputAllElements() {
@@ -86,7 +86,7 @@ public class RunTimeStorage implements Storage {
             }
             return stringBuilder;
         } catch (IllegalStateException | NullPointerException e) {
-            throw new FileException(OUTPUT_ALL_EXCEPTION);
+            throw new CustomException(OUTPUT_ALL_EXCEPTION);
         }
     }
 
