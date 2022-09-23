@@ -1,32 +1,37 @@
 package dictionary.work.console.commands;
 
-import dictionary.work.DAO.Dictionary;
+import dictionary.work.DAO.Storage;
+
 /**
  * Класс реализует метод интерфейса Command поиском записи из словаря
  */
-public class SearchCommand implements Command {
-    private Dictionary storage;
-    private String key;
+public class SearchCommand implements Command<String> {
+    private final Storage typeOfStorage;
+    private final String keyWord;
+    private static final String YES_ELEMENT = "Такой элемент есть";
+    private static final String NO_ELEMENT = "Такого элемента нет";
+
     /**
      * Конструктор задает состояние объекта необходимыми параметрами поиска записи в словаре
-     * @param storage - объект хранящий тип хранения словаря
-     * @param key   - аргумент, хранящий ключ - слово, который необходимо удалить
+     *
+     * @param typeOfStorage - объект хранящий тип хранения словаря
+     * @param keyWord       - аргумент, хранящий ключ - слово, который необходимо удалить
      */
-    public SearchCommand(Dictionary storage, String key) {
-        this.storage = storage;
-        this.key = key;
+    public SearchCommand(Storage typeOfStorage, String keyWord) {
+        this.typeOfStorage = typeOfStorage;
+        this.keyWord = keyWord;
 
     }
+
     /**
      * Реализация метода выполнения команды(поиск записи) интерфейса Command
      */
     @Override
-    public void execute() {
-        if(storage.searchElement(key)){
-            System.out.println("yes element");
-        }
-        else {
-            System.out.println("no element");
+    public String execute() {
+        if (typeOfStorage.searchElement(keyWord)) {
+            return YES_ELEMENT;
+        } else {
+            return NO_ELEMENT;
         }
     }
 }

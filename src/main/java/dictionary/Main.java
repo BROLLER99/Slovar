@@ -1,11 +1,11 @@
 package dictionary;
 
-import dictionary.work.console.CheckWord;
-import dictionary.work.console.InterfaceCheckWord;
+import dictionary.work.Model.ModelOfCommand;
+import dictionary.work.config.DictionaryConfig;
 import dictionary.work.console.View;
-import dictionary.work.console.commands.Invoker;
+import dictionary.work.console.commands.FactoryOfCommands;
 
-import static dictionary.work.config.DictionaryConfig.createDictionary;
+import static dictionary.work.config.StorageConfig.createStorage;
 
 
 /**
@@ -18,9 +18,10 @@ public class Main {
      * @param args Параметры командной строки
      */
     public static void main(String[] args) {
-        InterfaceCheckWord checkWord = new CheckWord();
-        Invoker invoker = new Invoker(createDictionary(args));
-        View view = new View(checkWord, createDictionary(args), invoker);
+        ModelOfCommand modelOfCommand = new ModelOfCommand();
+        FactoryOfCommands factoryOfCommands = new FactoryOfCommands(createStorage(args));
+        DictionaryConfig dictionaryConfig = new DictionaryConfig();
+        View view = new View(dictionaryConfig, factoryOfCommands, modelOfCommand);
         view.startApp();
     }
 }

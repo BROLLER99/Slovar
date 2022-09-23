@@ -1,4 +1,4 @@
-.idea
-out
-*.txt
-Slovar.iml
+/.idea
+/target
+/*.txt
+/Slovar.iml

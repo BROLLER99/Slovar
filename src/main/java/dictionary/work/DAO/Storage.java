@@ -3,7 +3,13 @@ package dictionary.work.DAO;
 /**
  * Интерфейс определяет методы для работы со словарем
  */
-public interface Dictionary {
+public interface Storage {
+    String ADD_EXCEPTION = "Ошибка добавления элемента";
+    String DELETE_EXCEPTION = "Ошибка удаления элемента";
+    String SEARCH_EXCEPTION = "Ошибка поиска элемента";
+    String OUTPUT_ALL_EXCEPTION = "Ошибка вывода всех элементов";
+    String KEY_VALUE_SEPARATOR = ":";
+
     /**
      * Метод добавление элемента
      *
@@ -31,11 +37,4 @@ public interface Dictionary {
      * Метод для вывода всех элементов
      */
     StringBuilder outputAllElements();
-
-    /**
-     * Метод установки номера выбранного словаря
-     *
-     * @param numberOfDictionary - аргумент, хранящий номер словаря
-     */
-    void setNumberOfDictionary(int numberOfDictionary);
 }

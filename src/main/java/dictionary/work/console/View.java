@@ -1,10 +1,13 @@
 package dictionary.work.console;
 
-import dictionary.work.DAO.Dictionary;
+import dictionary.work.Model.ModelOfCommand;
+import dictionary.work.config.DictionaryConfig;
+import dictionary.work.console.commands.FactoryOfCommands;
 import dictionary.work.console.commands.Invoker;
-import dictionary.work.exeption.FileException;
+import dictionary.work.exeption.CustomException;
 
 import java.io.Console;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -16,169 +19,123 @@ import java.util.Scanner;
 public class View {
 
     private static final String MAIN_MENU = "Выберете действие: \n1 - Словарь №1 \n2 - Словарь №2 \n0 - Выход из программы";
-    private static final String DICTIONARY_MENU = "Выберете действие: \n1 - Просмотр всех пар слов \n2 - Добавить элемент \n3 - Удалить элемент \n4 - Поиск по ключу \n5 - Выйти из программы";
-    private static final String FIRST_DICTIONARY_AND_TERMS = "Выбран словарь № 1. \nВ данном словаре длинна слов может быть только 4 символа и эти символы только буквы латинской раскладки";
-    private static final String SECOND_DICTIONARY_AND_TERMS = "Выбран словарь № 2. \nВ данном словаре длина слов может быть только 5 символа и эти символы только цифры.";
-    private static final String EXIT_PROGRAM = "Выход из программы. ";
-    private static final String DOES_NOT_EXIST = "Такого пункта меню не существует! ";
-    private static final String KEY_WORD = "Ключ слово: ";
-    private static final String VALUE = "Слово перевод ";
-    private static final String ADD_ENTRY = "Добавлена запись: %s %s %s %n";
-    private static final String DELETE = " удалено ";
-    private static final String ALL_WORDS = "Все слова выведены: ";
-    private static final String KEY_VALUE_SEPARATOR = ":";
-    private static final String BAD_WORD = "Недопустимое слово.";
-    private static final String YES_ELEMENT = "Такой элемент есть! ";
-    private static final String NO_ELEMENT = "Такого элемента нет ";
-    private static final String ONE_FOR_USER_CHOICE_IN_MAIN_MENU = "1";
-    private static final String TWO_FOR_USER_CHOICE_IN_MAIN_MENU = "2";
-    private static final String ZERO_FOR_USER_CHOICE_IN_MAIN_MENU = "0";
-    private static final int FIRST_NUMBER_OF_DICTIONARY = 1;
-    private static final int SECOND_NUMBER_OF_DICTIONARY = 2;
-    private static final String FIRST_PATTERN = "[a-zA-Z]{4}";
-    private static final String SECOND_PATTERN = "[0-9]{5}";
-    private static final int ZERO_FOR_EXIT = 0;
-    private static final String ONE_FOR_CHOICE_IN_DICTIONARY_MENU = "1";
-    private static final String TWO_FOR_CHOICE_IN_DICTIONARY_MENU = "2";
-    private static final String THREE_FOR_CHOICE_IN_DICTIONARY_MENU = "3";
-    private static final String FOUR_FOR_CHOICE_IN_DICTIONARY_MENU = "4";
-    private static final String FIVE_FOR_CHOICE_IN_DICTIONARY_MENU = "5";
-    private int numberOfDictionary;
-    private InterfaceCheckWord checkWord;
-    private Dictionary storage;
-    private Invoker invoker;
-
-    private String pattern;
-    private Scanner scanner;
+    private static final String DICTIONARY_MENU = "Выберете действие: \n1 - Просмотр всех пар слов \n2 - Добавить элемент (ключ:значение) \n3 - Удалить элемент (ключ) \n4 - Поиск по ключу (ключ) \n5 - Выйти из программы";
+    private static final String MENU_EXCEPTION = "Выбран не существующий пункт!";
+    private static final String WRITE_EXCEPTION = "Ошибка ввода";
+    private static final String WRITE_KEY_WORD = "Введите ключ";
+    private static final String WRITE_VALUE_WORD = "Введите значение";
+    private final static String ZERO_FOR_EXIT = "0";
+    private static int numberOfDictionary;
+    private final DictionaryConfig dictionaryConfig;
+    private final FactoryOfCommands factoryOfCommands;
+    private final ModelOfCommand modelOfCommand;
+    static Scanner scanner;
 
     /**
      * Конструктор задает состояние объекта view необходимыми параметрами
-     * @param checkWord - объект проверяющий вводимое слово
-     * @param storage - объект хранящий тип хранения словаря
-     * @param invoker - объект для работы с запросами
+     *
+     * @param dictionaryConfig  объект для работы с правилами словарей
+     * @param factoryOfCommands объект выбора исполняемой команды
      */
-    public View(InterfaceCheckWord checkWord, Dictionary storage, Invoker invoker) {
-        this.checkWord = checkWord;
-        this.storage = storage;
-        this.invoker = invoker;
+    public View(DictionaryConfig dictionaryConfig, FactoryOfCommands factoryOfCommands, ModelOfCommand modelOfCommand) {
+        this.dictionaryConfig = dictionaryConfig;
+        this.factoryOfCommands = factoryOfCommands;
+        this.modelOfCommand = modelOfCommand;
     }
 
     /**
      * Метод обеспечивает ввод-вывод в консоль запросов для работы со словарем
+     *
+     * @throws CustomException - кастомное исключение для обработки исключений возникающих в методе startApp
      */
-    public void startApp() {
-        while (true) {
-            System.out.println(MAIN_MENU);
-            String userChoice = inputWord();
-
-            if (Objects.equals(userChoice, ONE_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = FIRST_PATTERN;
-                numberOfDictionary = FIRST_NUMBER_OF_DICTIONARY;
-                break;
-            } else if (Objects.equals(userChoice, TWO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                pattern = SECOND_PATTERN;
-                numberOfDictionary = SECOND_NUMBER_OF_DICTIONARY;
-                break;
-            } else if (Objects.equals(userChoice, ZERO_FOR_USER_CHOICE_IN_MAIN_MENU)) {
-                System.out.println(EXIT_PROGRAM);
-                System.exit(ZERO_FOR_EXIT);
-                break;
-            } else
-                System.out.println(DOES_NOT_EXIST);
-            System.out.println();
-        }
-        while (true) {
-            try {
-                if (numberOfDictionary == FIRST_NUMBER_OF_DICTIONARY) {
-                    System.out.println(FIRST_DICTIONARY_AND_TERMS);
-                } else System.out.println(SECOND_DICTIONARY_AND_TERMS);
+    public void startApp() throws CustomException {
+        try {
+            String pattern = mainMenu();
+            while (true) {
+                System.out.println(dictionaryConfig.getMapEntry(numberOfDictionary + "").getDescription());
                 System.out.println(DICTIONARY_MENU);
-                String userChoice = inputWord();
 
-                if (Objects.equals(userChoice, ONE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    System.out.println(ALL_WORDS);
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.outputAllElements();
-
-                } else if (Objects.equals(userChoice, TWO_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keyWord = checkWordCycle();
-                    System.out.println(VALUE);
-                    String valueWord = inputWord();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.addElement(keyWord, valueWord);
-
-                    System.out.printf(ADD_ENTRY, keyWord, KEY_VALUE_SEPARATOR, valueWord);
-                    System.out.println();
-                } else if (Objects.equals(userChoice, THREE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keyDelete = checkWordCycle();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.deleteElement(keyDelete);
-
-                    System.out.println(KEY_WORD + keyDelete + DELETE);
-                    System.out.println();
-                } else if (Objects.equals(userChoice, FOUR_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    String keySearch = checkWordCycle();
-
-                    invoker.setNumberOfDictionary(numberOfDictionary);
-                    invoker.searchElement(keySearch);
-
-                    System.out.println();
-                } else if (Objects.equals(userChoice, FIVE_FOR_CHOICE_IN_DICTIONARY_MENU)) {
-                    System.out.println(EXIT_PROGRAM);
-                    System.exit(ZERO_FOR_EXIT);
-                } else {
-                    System.out.println(DOES_NOT_EXIST);
-                    System.out.println();
+                int userChoice = userChoiceToInt();
+                for (Commands c : Commands.values()) {
+                    if (c.getSerialNumberOfCommand() == userChoice) {
+                        if (c.getNeedKey()) {
+                            System.out.println(WRITE_KEY_WORD);
+                            modelOfCommand.setKey(getInputWord());
+                        }
+                        if (c.getNeedValue()) {
+                            System.out.println(WRITE_VALUE_WORD);
+                            modelOfCommand.setValue(getInputWord());
+                        }
+                        modelOfCommand.setPattern(pattern);
+                        System.out.println(Invoker.executeCommand(factoryOfCommands.nameOfCommand(c, modelOfCommand)));
+                        break;
+                    }
                 }
-            } catch (FileException e) {
-                System.out.println(e.getMessage());
             }
+        } catch (CustomException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     /**
-     * Метод запрашивает пользовательский ввод
+     * Метод геттер возвращает номер выбранного словаря
      *
-     * @return возвращает значение введенное пользователем
+     * @return numberOfDictionary - номер выбранного словаря
      */
-    private String inputWord() {
-        Console console = System.console();
-        if (console == null) {
-            return getScanner().nextLine();
-        } else {
-            return console.readLine();
-        }
+    public static int getNumberOfDictionary() {
+        return numberOfDictionary;
     }
 
-    /**
-     * Метод проверяет наличие Scanner и создает его если его нет
-     *
-     * @return возвращает Scanner в зависимости от условия
-     */
-    private Scanner getScanner() {
+    private static Scanner getScanner() {
         if (scanner == null) {
             return new Scanner(System.in);
         } else return scanner;
     }
 
     /**
-     * Метод запрашивает пользовательский ввод до тех пор, пока не будет введено правильное слово
+     * Метод получения введенного слова
      *
-     * @return возвращает значение правильно введенного слова
+     * @return возвращает метод для введения слова
+     * @throws CustomException - кастомное исключение для обработки исключений метода inputWord()
      */
-    private String checkWordCycle() {
-        String keyWord;
-        while (true) {
-            System.out.println(KEY_WORD);
-            keyWord = inputWord();
-            if (checkWord.check(pattern, keyWord)) {
-                return keyWord;
+    public String getInputWord() throws CustomException {
+        return inputWord();
+    }
+
+    private static String inputWord() throws CustomException {
+        try {
+            Console console = System.console();
+            if (console == null) {
+                return getScanner().nextLine();
             } else {
-                System.out.println(BAD_WORD);
+                return console.readLine();
             }
+        } catch (NoSuchElementException | IllegalStateException e) {
+            throw new CustomException(WRITE_EXCEPTION);
+        }
+    }
+
+    private String mainMenu() throws CustomException {
+        String pattern;
+        try {
+            System.out.println(MAIN_MENU);
+            String userChoice = getInputWord();
+            if (Objects.equals(userChoice, ZERO_FOR_EXIT)) {
+                System.exit(Integer.parseInt(ZERO_FOR_EXIT));
+            }
+            pattern = dictionaryConfig.getMapEntry(userChoice).getPattern();
+            numberOfDictionary = Integer.parseInt(userChoice);
+        } catch (CustomException | NumberFormatException | NullPointerException e) {
+            throw new CustomException(MENU_EXCEPTION);
+        }
+        return pattern;
+    }
+
+    private int userChoiceToInt() throws CustomException {
+        try {
+            return Integer.parseInt(getInputWord());
+        } catch (NumberFormatException e) {
+            throw new CustomException(MENU_EXCEPTION);
         }
     }
 }
